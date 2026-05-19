@@ -13,7 +13,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
-	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 func setupDB(t *testing.T) (*store.Store, func()) {
@@ -26,9 +25,6 @@ func setupDB(t *testing.T) (*store.Store, func()) {
 		tcpostgres.WithUsername("test_history"),
 		tcpostgres.WithPassword("test_history"),
 		tcpostgres.BasicWaitStrategies(),
-		tcpostgres.WithWaitStrategy(
-			wait.ForLog("database system is ready to accept connections").
-				WithOccurrence(2).WithStartupTimeout(60*time.Second)),
 	)
 	require.NoError(t, err)
 
