@@ -100,6 +100,12 @@ type HistorySummary struct {
 	P95DurationMS int
 	LastFailedAt  *time.Time
 	LastPassedAt  *time.Time
+	// LastFailureExcerpt is the message from the most recent failed attempt in the window.
+	// Nil when there are no failures or the failure had no recorded message.
+	LastFailureExcerpt *string
+	// LastCommitSHA is the commit SHA of the most recent attempt in the window.
+	// Nil when commit SHA was not recorded (e.g. local runs).
+	LastCommitSHA *string
 }
 
 // QueryHistory returns aggregated history for one test over a window (7d, 30d, 90d).
@@ -108,6 +114,8 @@ func (s *Store) QueryHistory(ctx context.Context, repo, suite, env, testID, wind
 	if err != nil {
 		return nil, err
 	}
+	// Subqueries reuse $1–$4; PostgreSQL resolves positional parameters globally
+	// within the statement, including inside correlated subqueries.
 	row := s.db.QueryRowContext(ctx, `
 		SELECT
 			count(*) AS attempts,
@@ -121,7 +129,22 @@ func (s *Store) QueryHistory(ctx context.Context, repo, suite, env, testID, wind
 				percentile_cont(0.95) WITHIN GROUP (ORDER BY duration_ms), 0
 			) AS p95_duration_ms,
 			max(started_at) FILTER (WHERE status = 'failed') AS last_failed_at,
-			max(started_at) FILTER (WHERE status = 'passed') AS last_passed_at
+			max(started_at) FILTER (WHERE status = 'passed') AS last_passed_at,
+			(
+				SELECT failure_message_excerpt
+				FROM test_case_attempts
+				WHERE repo = $1 AND suite = $2 AND env = $3 AND test_id = $4
+				  AND status = 'failed'
+				  AND started_at >= now() - `+interval+`
+				ORDER BY started_at DESC LIMIT 1
+			) AS last_failure_excerpt,
+			(
+				SELECT commit_sha
+				FROM test_case_attempts
+				WHERE repo = $1 AND suite = $2 AND env = $3 AND test_id = $4
+				  AND started_at >= now() - `+interval+`
+				ORDER BY started_at DESC LIMIT 1
+			) AS last_commit_sha
 		FROM test_case_attempts
 		WHERE repo = $1 AND suite = $2 AND env = $3 AND test_id = $4
 		  AND started_at >= now() - `+interval,
@@ -133,6 +156,7 @@ func (s *Store) QueryHistory(ctx context.Context, repo, suite, env, testID, wind
 	if err := row.Scan(
 		&hs.Attempts, &hs.Passed, &hs.Failed, &hs.Skipped,
 		&hs.FailureRate, &p95, &hs.LastFailedAt, &hs.LastPassedAt,
+		&hs.LastFailureExcerpt, &hs.LastCommitSHA,
 	); err != nil {
 		return nil, fmt.Errorf("store: query history: %w", err)
 	}

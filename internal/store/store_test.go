@@ -78,10 +78,20 @@ func TestQueryHistory(t *testing.T) {
 
 	now := time.Now().UTC().Truncate(time.Millisecond)
 	attempts := []event.TestAttempt{
-		{EventID: "h1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-			RunID: "1", RunAttempt: 1, TestID: "f::t", Status: event.StatusPassed, DurationMS: 400, StartedAt: now},
-		{EventID: "h2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-			RunID: "2", RunAttempt: 1, TestID: "f::t", Status: event.StatusFailed, DurationMS: 900, StartedAt: now},
+		{
+			EventID: "h1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+			RunID: "run-1", RunAttempt: 1, TestID: "f::t",
+			Status: event.StatusPassed, DurationMS: 400,
+			CommitSHA: "commit-abc",
+			StartedAt: now.Add(-time.Minute),
+		},
+		{
+			EventID: "h2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+			RunID: "run-2", RunAttempt: 1, TestID: "f::t",
+			Status: event.StatusFailed, DurationMS: 900,
+			CommitSHA: "commit-def", FailureMessageExcerpt: "panic: nil pointer",
+			StartedAt: now,
+		},
 	}
 	require.NoError(t, s.UpsertAttempts(ctx, attempts))
 
@@ -91,6 +101,12 @@ func TestQueryHistory(t *testing.T) {
 	assert.Equal(t, 1, hs.Passed)
 	assert.Equal(t, 1, hs.Failed)
 	assert.InDelta(t, 50.0, hs.FailureRate, 0.1)
+
+	// Last failure message and most-recent commit SHA are surfaced.
+	require.NotNil(t, hs.LastFailureExcerpt)
+	assert.Equal(t, "panic: nil pointer", *hs.LastFailureExcerpt)
+	require.NotNil(t, hs.LastCommitSHA)
+	assert.Equal(t, "commit-def", *hs.LastCommitSHA, "most recent run's commit SHA")
 }
 
 func TestQueryTrends(t *testing.T) {

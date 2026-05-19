@@ -50,19 +50,21 @@ var (
 // ---- response types mirroring handler output (no direct internal imports) ----
 
 type historySummary struct {
-	Repo          string     `json:"Repo"`
-	Suite         string     `json:"Suite"`
-	Env           string     `json:"Env"`
-	TestID        string     `json:"TestID"`
-	Window        string     `json:"Window"`
-	Attempts      int        `json:"Attempts"`
-	Passed        int        `json:"Passed"`
-	Failed        int        `json:"Failed"`
-	Skipped       int        `json:"Skipped"`
-	FailureRate   float64    `json:"FailureRate"`
-	P95DurationMS int        `json:"P95DurationMS"`
-	LastFailedAt  *time.Time `json:"LastFailedAt"`
-	LastPassedAt  *time.Time `json:"LastPassedAt"`
+	Repo               string     `json:"Repo"`
+	Suite              string     `json:"Suite"`
+	Env                string     `json:"Env"`
+	TestID             string     `json:"TestID"`
+	Window             string     `json:"Window"`
+	Attempts           int        `json:"Attempts"`
+	Passed             int        `json:"Passed"`
+	Failed             int        `json:"Failed"`
+	Skipped            int        `json:"Skipped"`
+	FailureRate        float64    `json:"FailureRate"`
+	P95DurationMS      int        `json:"P95DurationMS"`
+	LastFailedAt       *time.Time `json:"LastFailedAt"`
+	LastPassedAt       *time.Time `json:"LastPassedAt"`
+	LastFailureExcerpt *string    `json:"LastFailureExcerpt"`
+	LastCommitSHA      *string    `json:"LastCommitSHA"`
 }
 
 type trendBucket struct {
@@ -459,6 +461,12 @@ func TestLifecycle_Playwright(t *testing.T) {
 	assert.InDelta(t, 50.0, hs.FailureRate, 0.1)
 	assert.NotNil(t, hs.LastFailedAt)
 	assert.NotNil(t, hs.LastPassedAt)
+
+	// Failure reason and commit SHA are surfaced in the summary.
+	require.NotNil(t, hs.LastFailureExcerpt, "failure message must be captured")
+	assert.Contains(t, *hs.LastFailureExcerpt, "Timeout")
+	require.NotNil(t, hs.LastCommitSHA, "commit SHA must be stored and returned")
+	assert.Equal(t, "e2esha", *hs.LastCommitSHA)
 
 	// "create and delete VPC" — 1 passed, no failures
 	hs2 := decodeHistory(t, doGet(t,
