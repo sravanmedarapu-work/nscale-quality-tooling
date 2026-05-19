@@ -649,32 +649,28 @@ var _ = Describe("Lifecycle", func() {
 	})
 
 	Describe("Window filtering", func() {
-		It("returns the recent attempt in all windows (7d, 30d, 90d)", func() {
-			suite := suiteName()
-			rid := runID()
-			now := time.Now().UTC().Truncate(time.Millisecond)
+		for _, window := range []string{"7d", "30d", "90d"} {
+			window := window
+			It("returns the recent attempt within "+window, func() {
+				suite := suiteName()
+				rid := runID()
+				now := time.Now().UTC().Truncate(time.Millisecond)
 
-			batch := []event.TestAttempt{{
-				EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestWindow", 0),
-				Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
-				RunID: rid, RunAttempt: 1,
-				TestID: "pkg::TestWindow", Status: "passed", DurationMS: 50, StartedAt: now,
-			}}
-			resp := doPost("/v1/runs/ingest", map[string]any{"events": batch}, e2eToken)
-			defer resp.Body.Close()
-			Expect(resp.StatusCode).To(Equal(http.StatusAccepted))
+				batch := []event.TestAttempt{{
+					EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestWindow", 0),
+					Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
+					RunID: rid, RunAttempt: 1,
+					TestID: "pkg::TestWindow", Status: "passed", DurationMS: 50, StartedAt: now,
+				}}
+				resp := doPost("/v1/runs/ingest", map[string]any{"events": batch}, e2eToken)
+				defer resp.Body.Close()
+				Expect(resp.StatusCode).To(Equal(http.StatusAccepted))
 
-			for _, window := range []string{"7d", "30d", "90d"} {
-				window := window
-				Context(window, func() {
-					It("sees the attempt within "+window, func() {
-						hs := decodeHistory(doGet(
-							historyURL(e2eRepo, suite, "e2e", "pkg::TestWindow", window)))
-						Expect(hs.Attempts).To(Equal(1))
-					})
-				})
-			}
-		})
+				hs := decodeHistory(doGet(
+					historyURL(e2eRepo, suite, "e2e", "pkg::TestWindow", window)))
+				Expect(hs.Attempts).To(Equal(1))
+			})
+		}
 	})
 
 	Describe("Empty results", func() {
