@@ -1,0 +1,3728 @@
+[
+  {
+    "SuitePath": "/home/runner/work/uni-region/uni-region/test/api/suites",
+    "SuiteDescription": "Region API Test Suites",
+    "SuiteLabels": [],
+    "SuiteSucceeded": true,
+    "SuiteHasProgrammaticFocus": false,
+    "SpecialSuiteFailureReasons": null,
+    "PreRunStats": {
+      "TotalSpecs": 66,
+      "SpecsThatWillRun": 14
+    },
+    "StartTime": "2026-05-19T13:04:19.422464758Z",
+    "EndTime": "2026-05-19T13:05:43.898193546Z",
+    "RunTime": 84475728788,
+    "SuiteConfig": {
+      "RandomSeed": 1779195848,
+      "RandomizeAllSpecs": false,
+      "FocusStrings": [
+        "File Storage Management"
+      ],
+      "SkipStrings": null,
+      "FocusFiles": null,
+      "SkipFiles": null,
+      "LabelFilter": "",
+      "FailOnPending": false,
+      "FailOnEmpty": false,
+      "FailFast": false,
+      "FlakeAttempts": 0,
+      "MustPassRepeatedly": 0,
+      "DryRun": false,
+      "PollProgressAfter": 0,
+      "PollProgressInterval": 0,
+      "Timeout": 3588995511927,
+      "EmitSpecProgress": false,
+      "OutputInterceptorMode": "",
+      "SourceRoots": null,
+      "GracePeriod": 30000000000,
+      "ParallelProcess": 1,
+      "ParallelTotal": 1,
+      "ParallelHost": ""
+    },
+    "SpecReports": [
+      {
+        "ContainerHierarchyTexts": null,
+        "ContainerHierarchyLocations": null,
+        "ContainerHierarchyLabels": null,
+        "LeafNodeType": "BeforeSuite",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+          "LineNumber": 42
+        },
+        "LeafNodeLabels": null,
+        "LeafNodeText": "",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:04:19.42253216Z",
+        "EndTime": "2026-05-19T13:04:19.422774526Z",
+        "RunTime": 242366,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 42
+            },
+            "TimelineLocation": {
+              "Order": 1,
+              "Time": "2026-05-19T13:04:19.422534273Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeSuite"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 42
+            },
+            "TimelineLocation": {
+              "Order": 3,
+              "Time": "2026-05-19T13:04:19.422773454Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 239181,
+            "NodeType": "BeforeSuite"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SSHCertificateAuthority",
+          "When managing SSH certificate authorities",
+          "Given a valid Ed25519 public key"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 57
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+          "LineNumber": 58
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should create an SSH certificate authority with correct response fields",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422894778Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SSHCertificateAuthority",
+          "When managing SSH certificate authorities",
+          "Given a valid Ed25519 public key"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 57
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+          "LineNumber": 72
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should appear in the list filtered by org and project",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422903641Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SSHCertificateAuthority",
+          "When managing SSH certificate authorities",
+          "Given a valid Ed25519 public key"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 57
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+          "LineNumber": 90
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should delete the SSH certificate authority and confirm it is no longer found",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422909159Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SSHCertificateAuthority",
+          "When getting a non-existent SSH certificate authority",
+          "Given a non-existent SSH certificate authority ID"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 104
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 105
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+          "LineNumber": 106
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return not found",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422922299Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SSHCertificateAuthority",
+          "When creating an SSH certificate authority with an invalid key",
+          "Given a malformed public key"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 114
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+            "LineNumber": 115
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/sshcertificateauthorities_test.go",
+          "LineNumber": 116
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return 422 Unprocessable Entity",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.42292915Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Flavor Discovery",
+          "When listing flavors for a region",
+          "Given valid region and organization"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 133
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 134
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 135
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 136
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return all available flavors",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422934608Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Flavor Discovery",
+          "When listing flavors for a region",
+          "Given invalid parameters"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 133
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 134
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 159
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 160
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should reject requests with invalid region ID for flavors",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422940106Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Discovery",
+          "When listing images for a region",
+          "Given valid region and organization"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 171
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 172
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 173
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 174
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return all available images",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422945454Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Discovery",
+          "When listing images for a region",
+          "Given invalid parameters"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 171
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 172
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 193
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 194
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should reject requests with invalid region ID for images",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422952955Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When managing load balancer lifecycle",
+          "Given a backend member and publicIP=true"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 40
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 73
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "creates a load balancer in Pending state",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.42296228Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When managing load balancer lifecycle",
+          "Given a backend member and publicIP=true"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 40
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 109
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "appears in the load balancer list",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422966907Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When managing load balancer lifecycle",
+          "Given a backend member and publicIP=true"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 40
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 124
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "can be retrieved by id",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422972054Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When managing load balancer lifecycle",
+          "Given a backend member and publicIP=true"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 40
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 131
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "eventually reports Provisioned with status.vipAddress and status.publicIP populated",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422977553Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When managing load balancer lifecycle",
+          "Given a backend member and publicIP=true"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 40
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 143
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "accepts updates to allowed CIDRs and pool members",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.42298235Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When managing load balancer lifecycle",
+          "Given a backend member and publicIP=true"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 40
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 173
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "eventually clears status.publicIP when publicIP is toggled to false",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422987588Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When managing load balancer lifecycle",
+          "Given a backend member and publicIP=true"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 40
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 200
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "deletes the load balancer and confirms it disappears",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.422992255Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When creating a UDP listener without idleTimeoutSeconds",
+          "Given a UDP listener on port 53 with idleTimeoutSeconds omitted"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 214
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 241
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 242
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "creates the load balancer and persists idleTimeoutSeconds as nil",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423014639Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When delete is invoked repeatedly during cleanup",
+          "Given a provisioned load balancer"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 275
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 302
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 303
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "creates and reaches Provisioned",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423023402Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When delete is invoked repeatedly during cleanup",
+          "Given a provisioned load balancer"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 275
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 302
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 313
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "acknowledges the first delete",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423031825Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When delete is invoked repeatedly during cleanup",
+          "Given a provisioned load balancer"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 275
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 302
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 317
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "treats an immediate second delete as idempotent",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423039867Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "LoadBalancer",
+          "When delete is invoked repeatedly during cleanup",
+          "Given a provisioned load balancer"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 275
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+            "LineNumber": 302
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/loadbalancers_test.go",
+          "LineNumber": 325
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "treats subsequent retries as idempotent until the load balancer is gone",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423044524Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region ACL Enforcement",
+          "When the owning organization supplies a private region ID",
+          "Given a flavor list request"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 42
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 49
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+          "LineNumber": 50
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return available flavors",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423054098Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region ACL Enforcement",
+          "When the owning organization supplies a private region ID",
+          "Given an image list request"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 42
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 59
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+          "LineNumber": 60
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should succeed",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423061499Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region ACL Enforcement",
+          "When a non-owning organization supplies a private region ID directly",
+          "Given a flavor list request for the private region"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 67
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 77
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+          "LineNumber": 78
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return 404 without leaking region existence",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423068811Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region ACL Enforcement",
+          "When a non-owning organization supplies a private region ID directly",
+          "Given an image list request for the private region"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 67
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 87
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+          "LineNumber": 88
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return 404 without leaking region existence",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423078986Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region ACL Enforcement",
+          "When a non-owning organization supplies a private region ID directly",
+          "Given a network creation request referencing the private region"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 67
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+            "LineNumber": 95
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/region_acl_test.go",
+          "LineNumber": 96
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return 404 without leaking region existence",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423087118Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Network Management",
+          "When managing the network lifecycle",
+          "Given valid organization and project credentials"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 44
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+          "LineNumber": 45
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should provision a network with correct metadata and prefix",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423097183Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Network Management",
+          "When managing the network lifecycle",
+          "Given an existing network"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+          "LineNumber": 69
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should appear in the project network list",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423105005Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Network Management",
+          "When managing the network lifecycle",
+          "Given an existing network"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+          "LineNumber": 91
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should reach provisioned state and be retrievable by ID",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423109662Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Network Management",
+          "When managing the network lifecycle",
+          "Given an existing network"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+          "LineNumber": 117
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should reflect updated name and description while preserving the prefix",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423114359Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Network Management",
+          "When managing the network lifecycle",
+          "Given the network is deleted"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 153
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+          "LineNumber": 154
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should succeed",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423119237Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Network Management",
+          "When managing the network lifecycle",
+          "Given the network is deleted"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 37
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+            "LineNumber": 153
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/networks_test.go",
+          "LineNumber": 166
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return 404 on subsequent reads",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423123794Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "External Network Discovery",
+          "When listing external networks for a region",
+          "Given valid region and organization"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 206
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 207
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 208
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 209
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return 403 when RBAC denies access to external networks",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423132036Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "External Network Discovery",
+          "When listing external networks for a region",
+          "Given invalid parameters"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 206
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 207
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 218
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 219
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should reject requests with invalid region ID for external networks",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423141941Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Management",
+          "When listing images",
+          "Given invalid parameters"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 46
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 47
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 48
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+          "LineNumber": 49
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return an error for an invalid organization ID",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423154961Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Management",
+          "When listing images",
+          "Given invalid parameters"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 46
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 47
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 48
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+          "LineNumber": 54
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return an error for an invalid region ID",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423162662Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Management",
+          "When listing images",
+          "Given a valid organization and region"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 46
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 47
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 60
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+          "LineNumber": 61
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return a non-empty list of images",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423167109Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Management",
+          "When deleting an image",
+          "Given an image ID that does not exist in the cache"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 46
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 70
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 71
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+          "LineNumber": 72
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return not found",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423186889Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Management",
+          "When managing a custom image"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 46
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 79
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+          "LineNumber": 90
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should create a custom image and return its ID",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423194561Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Management",
+          "When managing a custom image"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 46
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 79
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+          "LineNumber": 109
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should become ready and visible in the image list",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423198747Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Management",
+          "When managing a custom image"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 46
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 79
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+          "LineNumber": 115
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should delete the custom image successfully",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.42320737Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Image Management",
+          "When managing a custom image"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 46
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+            "LineNumber": 79
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/images_test.go",
+          "LineNumber": 124
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return not found when deleting the already-deleted image",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:19.423212287Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When listing file storage resources",
+          "Given valid project access"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 42
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 43
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 47
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return file storage resources for the project",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:04:19.423246409Z",
+        "EndTime": "2026-05-19T13:04:20.3999604Z",
+        "RunTime": 976713991,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[GET /api/v2/filestorageclasses?regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=419.537085ms traceparent=00-06df21784b70c45b15b6e80c2b9f26da-7b9996170874b491-01\n[GET /api/v2/filestorageclasses?regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"creationTime\":\"2026-01-09T09:25:45Z\",\"healthStatus\":\"healthy\",\"id\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"name\":\"standard\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"parallelism\":8,\"protocols\":[\"nfsv3\",\"nfsv4\"],\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}]\n[POST /api/v2/filestorage] status=201 duration=369.087968ms traceparent=00-eba99bd626ea84175df7808301c34259-3c543e1e2f0d6aef-01\n[POST /api/v2/filestorage] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:20Z\",\"description\":\"Test resource for list operation\",\"healthStatus\":\"unknown\",\"id\":\"a155cda2-2408-440e-8a5e-98af120a803e\",\"name\":\"test-list-storage-c6bzgfsb\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"pending\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\"}}\nCreated test storage for list: test-list-storage-c6bzgfsb (a155cda2-2408-440e-8a5e-98af120a803e)\n[GET /api/v2/filestorage?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=78.262157ms traceparent=00-7bb8812a12cd2b3ee0bc8ea6fa5754ea-0ee620f2ef0d7a7d-01\n[GET /api/v2/filestorage?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:20Z\",\"description\":\"Test resource for list operation\",\"healthStatus\":\"unknown\",\"id\":\"a155cda2-2408-440e-8a5e-98af120a803e\",\"name\":\"test-list-storage-c6bzgfsb\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"pending\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\"}}]\n  Found our test storage: test-list-storage-c6bzgfsb (a155cda2-2408-440e-8a5e-98af120a803e) - 10GiB\nFound 1 total file storage resources\nCleaning up test list storage: a155cda2-2408-440e-8a5e-98af120a803e\n[DELETE /api/v2/filestorage/a155cda2-2408-440e-8a5e-98af120a803e] status=202 duration=108.973596ms traceparent=00-8acddc330f1134071e5abd82d605a0c8-53f042b6d4a58fe9-01\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 4,
+              "Time": "2026-05-19T13:04:19.423250435Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 6,
+              "Time": "2026-05-19T13:04:19.423308463Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 58048,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 47
+            },
+            "TimelineLocation": {
+              "Order": 7,
+              "Time": "2026-05-19T13:04:19.423309775Z"
+            },
+            "Message": "should return file storage resources for the project",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 47
+            },
+            "TimelineLocation": {
+              "Offset": 2639,
+              "Order": 9,
+              "Time": "2026-05-19T13:04:20.290889587Z"
+            },
+            "Message": "should return file storage resources for the project",
+            "Duration": 867579802,
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 118
+            },
+            "TimelineLocation": {
+              "Offset": 2639,
+              "Order": 10,
+              "Time": "2026-05-19T13:04:20.290899891Z"
+            },
+            "Message": "Given valid project access",
+            "NodeType": "AfterEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 118
+            },
+            "TimelineLocation": {
+              "Offset": 2874,
+              "Order": 12,
+              "Time": "2026-05-19T13:04:20.399953169Z"
+            },
+            "Message": "Given valid project access",
+            "Duration": 109053268,
+            "NodeType": "AfterEach"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When listing file storage resources",
+          "Given invalid parameters"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 42
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 126
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 127
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should reject requests with invalid organization ID format",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:20.400134895Z",
+        "EndTime": "2026-05-19T13:04:20.400368583Z",
+        "RunTime": 233688,
+        "ParallelProcess": 1,
+        "Failure": {
+          "Message": "Bug INST-457: File Storage API accepts invalid organizationId and returns data for different organization",
+          "Location": {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 128,
+            "FullStackTrace": "github.com/unikorn-cloud/region/test/api/suites.init.func1.1.2.1()\n\t/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go:128 +0x32"
+          },
+          "TimelineLocation": {
+            "Order": 17,
+            "Time": "2026-05-19T13:04:20.400297724Z"
+          },
+          "FailureNodeContext": "leaf-node",
+          "FailureNodeType": "It",
+          "FailureNodeLocation": {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 127
+          },
+          "ProgressReport": {
+            "LeafNodeLocation": {},
+            "SpecStartTime": "0001-01-01T00:00:00Z",
+            "CurrentNodeLocation": {},
+            "CurrentNodeStartTime": "0001-01-01T00:00:00Z",
+            "CurrentStepLocation": {},
+            "CurrentStepStartTime": "0001-01-01T00:00:00Z",
+            "TimelineLocation": {
+              "Time": "0001-01-01T00:00:00Z"
+            }
+          }
+        },
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 13,
+              "Time": "2026-05-19T13:04:20.400138139Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 15,
+              "Time": "2026-05-19T13:04:20.400165688Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 27549,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 127
+            },
+            "TimelineLocation": {
+              "Order": 16,
+              "Time": "2026-05-19T13:04:20.400166599Z"
+            },
+            "Message": "should reject requests with invalid organization ID format",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 127
+            },
+            "TimelineLocation": {
+              "Order": 18,
+              "Time": "2026-05-19T13:04:20.400365569Z"
+            },
+            "Message": "should reject requests with invalid organization ID format",
+            "Duration": 198970,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage lifecycle",
+          "Given valid storage class and configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 141
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 151
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 152
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should create a file storage resource",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:04:20.400460613Z",
+        "EndTime": "2026-05-19T13:04:20.758838747Z",
+        "RunTime": 358378124,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[GET /api/v2/filestorageclasses?regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=77.862609ms traceparent=00-86eae4101e6913a89f3e5455d969149c-2abd599fe578717e-01\n[GET /api/v2/filestorageclasses?regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"creationTime\":\"2026-01-09T09:25:45Z\",\"healthStatus\":\"healthy\",\"id\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"name\":\"standard\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"parallelism\":8,\"protocols\":[\"nfsv3\",\"nfsv4\"],\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}]\nUsing storage class: standard (53ff0ab7-d932-42ba-bd40-a15b33406f0e)\n[POST /api/v2/filestorage] status=201 duration=280.163361ms traceparent=00-85b7111225a3e51a2329b5f516fda203-d7889031313f83fd-01\n[POST /api/v2/filestorage] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:20Z\",\"description\":\"Test lifecycle file storage\",\"healthStatus\":\"unknown\",\"id\":\"e6bbcdbc-ee33-454d-bc84-06868969cc0d\",\"name\":\"test-storage-q6vlqpdm\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"pending\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\"}}\nCreated file storage: test-storage-q6vlqpdm (e6bbcdbc-ee33-454d-bc84-06868969cc0d)\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 19,
+              "Time": "2026-05-19T13:04:20.400462866Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 21,
+              "Time": "2026-05-19T13:04:20.400489554Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 26688,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 152
+            },
+            "TimelineLocation": {
+              "Order": 22,
+              "Time": "2026-05-19T13:04:20.400490535Z"
+            },
+            "Message": "should create a file storage resource",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 152
+            },
+            "TimelineLocation": {
+              "Offset": 1477,
+              "Order": 24,
+              "Time": "2026-05-19T13:04:20.758828072Z"
+            },
+            "Message": "should create a file storage resource",
+            "Duration": 358337537,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage lifecycle",
+          "Given valid storage class and configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 141
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 151
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 217
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should retrieve the created file storage resource",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:04:20.758925078Z",
+        "EndTime": "2026-05-19T13:04:41.086374534Z",
+        "RunTime": 20327449456,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[GET /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] status=200 duration=78.12185ms traceparent=00-705f3aea40d13cc51cca7f8362ef113b-5dcc8c7aa70623a0-01\n[GET /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:20Z\",\"description\":\"Test lifecycle file storage\",\"healthStatus\":\"unknown\",\"id\":\"e6bbcdbc-ee33-454d-bc84-06868969cc0d\",\"name\":\"test-storage-q6vlqpdm\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"pending\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\"}}\n[GET /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] status=200 duration=81.022033ms traceparent=00-a9c7ce6a5ff4f69d31f9d10cc4f7e5bc-6e6dd86461bf1537-01\n[GET /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:20Z\",\"description\":\"Test lifecycle file storage\",\"healthStatus\":\"unknown\",\"id\":\"e6bbcdbc-ee33-454d-bc84-06868969cc0d\",\"name\":\"test-storage-q6vlqpdm\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"pending\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\"}}\n[GET /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] status=200 duration=79.296167ms traceparent=00-addf76f87962d2505399f07766a4ecc0-1e93952a34be2f15-01\n[GET /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:20Z\",\"description\":\"Test lifecycle file storage\",\"healthStatus\":\"unknown\",\"id\":\"e6bbcdbc-ee33-454d-bc84-06868969cc0d\",\"name\":\"test-storage-q6vlqpdm\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\n[GET /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] status=200 duration=78.167965ms traceparent=00-57349cd1efce88386ef9fd711d35c961-7b86ea40abf1a2af-01\n[GET /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:20Z\",\"description\":\"Test lifecycle file storage\",\"healthStatus\":\"unknown\",\"id\":\"e6bbcdbc-ee33-454d-bc84-06868969cc0d\",\"name\":\"test-storage-q6vlqpdm\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\nRetrieved file storage: test-storage-q6vlqpdm (e6bbcdbc-ee33-454d-bc84-06868969cc0d) - 10GiB (Status: provisioned)\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 25,
+              "Time": "2026-05-19T13:04:20.758937135Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 27,
+              "Time": "2026-05-19T13:04:20.758959346Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 22211,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 217
+            },
+            "TimelineLocation": {
+              "Order": 28,
+              "Time": "2026-05-19T13:04:20.759711224Z"
+            },
+            "Message": "should retrieve the created file storage resource",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 217
+            },
+            "TimelineLocation": {
+              "Offset": 3562,
+              "Order": 30,
+              "Time": "2026-05-19T13:04:41.086362576Z"
+            },
+            "Message": "should retrieve the created file storage resource",
+            "Duration": 20326651352,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage lifecycle",
+          "Given valid storage class and configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 141
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 151
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 253
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should update the file storage resource",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:04:41.086470027Z",
+        "EndTime": "2026-05-19T13:04:41.300396648Z",
+        "RunTime": 213926621,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[PUT /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] status=202 duration=213.707163ms traceparent=00-725b966517aad44def663f0ac4c906c0-ad9cca036cd543c5-01\n[PUT /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:20Z\",\"description\":\"Updated test file storage\",\"healthStatus\":\"unknown\",\"id\":\"e6bbcdbc-ee33-454d-bc84-06868969cc0d\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:04:41Z\",\"name\":\"test-storage-q6vlqpdm\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":20,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\nUpdated file storage: test-storage-q6vlqpdm (e6bbcdbc-ee33-454d-bc84-06868969cc0d) - now 20GiB\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 31,
+              "Time": "2026-05-19T13:04:41.086474904Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 33,
+              "Time": "2026-05-19T13:04:41.086499511Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 24617,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 253
+            },
+            "TimelineLocation": {
+              "Order": 34,
+              "Time": "2026-05-19T13:04:41.086500483Z"
+            },
+            "Message": "should update the file storage resource",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 253
+            },
+            "TimelineLocation": {
+              "Offset": 1067,
+              "Order": 36,
+              "Time": "2026-05-19T13:04:41.300385692Z"
+            },
+            "Message": "should update the file storage resource",
+            "Duration": 213885209,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage lifecycle",
+          "Given valid storage class and configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 141
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 151
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 287
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should delete the file storage resource",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:04:41.300486202Z",
+        "EndTime": "2026-05-19T13:04:41.41360873Z",
+        "RunTime": 113122528,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[DELETE /api/v2/filestorage/e6bbcdbc-ee33-454d-bc84-06868969cc0d] status=202 duration=113.012022ms traceparent=00-20d7808a73f225ae70b1495bca37dbda-387d006589ae0f97-01\nDeleted file storage: e6bbcdbc-ee33-454d-bc84-06868969cc0d\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 37,
+              "Time": "2026-05-19T13:04:41.300490228Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 39,
+              "Time": "2026-05-19T13:04:41.300514745Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 24346,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 287
+            },
+            "TimelineLocation": {
+              "Order": 40,
+              "Time": "2026-05-19T13:04:41.300515486Z"
+            },
+            "Message": "should delete the file storage resource",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 287
+            },
+            "TimelineLocation": {
+              "Offset": 226,
+              "Order": 42,
+              "Time": "2026-05-19T13:04:41.413597483Z"
+            },
+            "Message": "should delete the file storage resource",
+            "Duration": 113082007,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage lifecycle",
+          "Given valid storage class and configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 141
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 151
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 300
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should not find the deleted file storage resource",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:04:41.413702791Z",
+        "EndTime": "2026-05-19T13:04:41.413959766Z",
+        "RunTime": 256975,
+        "ParallelProcess": 1,
+        "Failure": {
+          "Message": "No filestorage ID available - create test may have been skipped or failed",
+          "Location": {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 302,
+            "FullStackTrace": "github.com/unikorn-cloud/region/test/api/suites.init.func1.2.1.5()\n\t/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go:302 +0x3a"
+          },
+          "TimelineLocation": {
+            "Order": 47,
+            "Time": "2026-05-19T13:04:41.413894468Z"
+          },
+          "FailureNodeContext": "leaf-node",
+          "FailureNodeType": "It",
+          "FailureNodeLocation": {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 300
+          },
+          "ProgressReport": {
+            "LeafNodeLocation": {},
+            "SpecStartTime": "0001-01-01T00:00:00Z",
+            "CurrentNodeLocation": {},
+            "CurrentNodeStartTime": "0001-01-01T00:00:00Z",
+            "CurrentStepLocation": {},
+            "CurrentStepStartTime": "0001-01-01T00:00:00Z",
+            "TimelineLocation": {
+              "Time": "0001-01-01T00:00:00Z"
+            }
+          }
+        },
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 43,
+              "Time": "2026-05-19T13:04:41.413707818Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 45,
+              "Time": "2026-05-19T13:04:41.413733146Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 25328,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 300
+            },
+            "TimelineLocation": {
+              "Order": 46,
+              "Time": "2026-05-19T13:04:41.413734328Z"
+            },
+            "Message": "should not find the deleted file storage resource",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 300
+            },
+            "TimelineLocation": {
+              "Order": 48,
+              "Time": "2026-05-19T13:04:41.413936941Z"
+            },
+            "Message": "should not find the deleted file storage resource",
+            "Duration": 202614,
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 317
+            },
+            "TimelineLocation": {
+              "Order": 49,
+              "Time": "2026-05-19T13:04:41.413941729Z"
+            },
+            "Message": "When managing file storage lifecycle",
+            "NodeType": "AfterAll"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 317
+            },
+            "TimelineLocation": {
+              "Order": 51,
+              "Time": "2026-05-19T13:04:41.413957863Z"
+            },
+            "Message": "When managing file storage lifecycle",
+            "Duration": 16134,
+            "NodeType": "AfterAll"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage attachments",
+          "Given a network and file storage resource"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 325
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 334
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 335
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should create a network for attachment",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:04:41.414055239Z",
+        "EndTime": "2026-05-19T13:05:01.901880393Z",
+        "RunTime": 20487825154,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[POST /api/v2/networks] status=201 duration=230.079973ms traceparent=00-263858ff21f46ebd6a68447e46b2759b-1130b55a632ece5a-01\n[POST /api/v2/networks] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:41Z\",\"description\":\"Test network for storage attachment\",\"healthStatus\":\"unknown\",\"id\":\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\",\"name\":\"test-attach-network-5jb65x6h\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"pending\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}\nCreated network for attachment: test-attach-network-5jb65x6h (cc4e44db-5bde-477c-a5f8-815e6a80e71c)\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=78.30956ms traceparent=00-882237a5c9d01721fcd0fd14fafb8d2f-8260b1a9be17cbf1-01\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:41Z\",\"description\":\"Test network for storage attachment\",\"healthStatus\":\"unknown\",\"id\":\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\",\"name\":\"test-attach-network-5jb65x6h\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioning\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"ca801b39-ed9c-4580-8ae1-87217da48de3\",\"creationTime\":\"2026-02-11T10:43:28Z\",\"description\":\"Test network for testing API automation\",\"healthStatus\":\"unknown\",\"id\":\"d88fdb92-27ea-4126-8c6a-7033871c8cec\",\"name\":\"api-automation-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"qa-testaccount02@nscale.com\",\"creationTime\":\"2026-03-03T09:28:08Z\",\"healthStatus\":\"unknown\",\"id\":\"ef8dc366-e50b-4b13-9383-3bee3c2bc9a0\",\"name\":\"pj-cool-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}]\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=80.966447ms traceparent=00-32d6a419133d0990868b16dba6c74e71-7b1e3c614bc90519-01\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:41Z\",\"description\":\"Test network for storage attachment\",\"healthStatus\":\"unknown\",\"id\":\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\",\"name\":\"test-attach-network-5jb65x6h\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioning\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"ca801b39-ed9c-4580-8ae1-87217da48de3\",\"creationTime\":\"2026-02-11T10:43:28Z\",\"description\":\"Test network for testing API automation\",\"healthStatus\":\"unknown\",\"id\":\"d88fdb92-27ea-4126-8c6a-7033871c8cec\",\"name\":\"api-automation-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"qa-testaccount02@nscale.com\",\"creationTime\":\"2026-03-03T09:28:08Z\",\"healthStatus\":\"unknown\",\"id\":\"ef8dc366-e50b-4b13-9383-3bee3c2bc9a0\",\"name\":\"pj-cool-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}]\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=79.426529ms traceparent=00-c23cee95620a04a5023e1c40d537f68f-cb717b3a841e9159-01\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:41Z\",\"description\":\"Test network for storage attachment\",\"healthStatus\":\"unknown\",\"id\":\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\",\"name\":\"test-attach-network-5jb65x6h\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"ca801b39-ed9c-4580-8ae1-87217da48de3\",\"creationTime\":\"2026-02-11T10:43:28Z\",\"description\":\"Test network for testing API automation\",\"healthStatus\":\"unknown\",\"id\":\"d88fdb92-27ea-4126-8c6a-7033871c8cec\",\"name\":\"api-automation-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"qa-testaccount02@nscale.com\",\"creationTime\":\"2026-03-03T09:28:08Z\",\"healthStatus\":\"unknown\",\"id\":\"ef8dc366-e50b-4b13-9383-3bee3c2bc9a0\",\"name\":\"pj-cool-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}]\nNetwork provisioned: cc4e44db-5bde-477c-a5f8-815e6a80e71c\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 52,
+              "Time": "2026-05-19T13:04:41.414057873Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 54,
+              "Time": "2026-05-19T13:04:41.414073286Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 15413,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 335
+            },
+            "TimelineLocation": {
+              "Order": 55,
+              "Time": "2026-05-19T13:04:41.414074147Z"
+            },
+            "Message": "should create a network for attachment",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 335
+            },
+            "TimelineLocation": {
+              "Offset": 6763,
+              "Order": 57,
+              "Time": "2026-05-19T13:05:01.901868545Z"
+            },
+            "Message": "should create a network for attachment",
+            "Duration": 20487794408,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage attachments",
+          "Given a network and file storage resource"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 325
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 334
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 378
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should create a file storage resource without attachments",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:05:01.901979071Z",
+        "EndTime": "2026-05-19T13:05:12.357053612Z",
+        "RunTime": 10455074541,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[GET /api/v2/filestorageclasses?regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=77.589149ms traceparent=00-24421d89daf9ca1b57b3a029f57071b8-b5934fb5696bb89b-01\n[GET /api/v2/filestorageclasses?regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"creationTime\":\"2026-01-09T09:25:45Z\",\"healthStatus\":\"healthy\",\"id\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"name\":\"standard\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"parallelism\":8,\"protocols\":[\"nfsv3\",\"nfsv4\"],\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}]\n[POST /api/v2/filestorage] status=201 duration=216.539347ms traceparent=00-23f02f64710383b5cd9b52c4baea714b-2b0026bc493a0344-01\n[POST /api/v2/filestorage] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"description\":\"Test file storage for attachment lifecycle\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"pending\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\"}}\nCreated file storage for attachment test: test-attach-storage-b2jdhcfs (fc773bd9-3adc-4ef2-b365-e8a7940b2d90)\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=78.177167ms traceparent=00-a26f2e21be8847421441ba2b14536314-b264d9a9f0cf984d-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"description\":\"Test file storage for attachment lifecycle\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"pending\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\"}}\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=81.044658ms traceparent=00-5fba57e9964ca6b4490e8d91d5b7817a-ee6cebac76dcec24-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"description\":\"Test file storage for attachment lifecycle\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 58,
+              "Time": "2026-05-19T13:05:01.901981895Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 60,
+              "Time": "2026-05-19T13:05:01.902011219Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 29334,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 378
+            },
+            "TimelineLocation": {
+              "Order": 61,
+              "Time": "2026-05-19T13:05:01.902012351Z"
+            },
+            "Message": "should create a file storage resource without attachments",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 378
+            },
+            "TimelineLocation": {
+              "Offset": 3225,
+              "Order": 63,
+              "Time": "2026-05-19T13:05:12.357042655Z"
+            },
+            "Message": "should create a file storage resource without attachments",
+            "Duration": 10455030304,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage attachments",
+          "Given a network and file storage resource"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 325
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 334
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 435
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should update file storage to add network attachment",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:05:12.357122385Z",
+        "EndTime": "2026-05-19T13:05:12.582909413Z",
+        "RunTime": 225787028,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[PUT /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=202 duration=225.560999ms traceparent=00-144a0759526c906193857553381e0bc9-d815d835a52699c5-01\n[PUT /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"description\":\"Test file storage with network attachment\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\"]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"attachments\":[{\"mountSource\":\"10.0.1.16:/uni-stor-ca189f71-9180-473e-b88e-5aeb32c5289d/fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"networkId\":\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\",\"provisioningStatus\":\"pending\"}],\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\nUpdated file storage with network attachment: cc4e44db-5bde-477c-a5f8-815e6a80e71c\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 64,
+              "Time": "2026-05-19T13:05:12.357126431Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 66,
+              "Time": "2026-05-19T13:05:12.357161393Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 34952,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 435
+            },
+            "TimelineLocation": {
+              "Order": 67,
+              "Time": "2026-05-19T13:05:12.357162375Z"
+            },
+            "Message": "should update file storage to add network attachment",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 435
+            },
+            "TimelineLocation": {
+              "Offset": 1326,
+              "Order": 69,
+              "Time": "2026-05-19T13:05:12.582898637Z"
+            },
+            "Message": "should update file storage to add network attachment",
+            "Duration": 225736262,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage attachments",
+          "Given a network and file storage resource"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 325
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 334
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 465
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should verify attachment is available on status with mount info",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:05:12.582994991Z",
+        "EndTime": "2026-05-19T13:05:12.738923306Z",
+        "RunTime": 155928315,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=77.925017ms traceparent=00-f05ce58d995d95de91b121981dec929f-f2df33efecef6be0-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"description\":\"Test file storage with network attachment\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\"]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"attachments\":[{\"mountSource\":\"10.0.1.16:/uni-stor-ca189f71-9180-473e-b88e-5aeb32c5289d/fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"networkId\":\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\",\"provisioningStatus\":\"pending\"}],\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=77.620844ms traceparent=00-f60ad1a3efa655ffb1f7d1c142341da5-16ab8aea75e30154-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"description\":\"Test file storage with network attachment\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\"]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"attachments\":[{\"mountSource\":\"10.0.1.16:/uni-stor-ca189f71-9180-473e-b88e-5aeb32c5289d/fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"networkId\":\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\",\"provisioningStatus\":\"pending\"}],\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\nAttachment verified:\n  Network ID: cc4e44db-5bde-477c-a5f8-815e6a80e71c\n  Mount Source: 10.0.1.16:/uni-stor-ca189f71-9180-473e-b88e-5aeb32c5289d/fc773bd9-3adc-4ef2-b365-e8a7940b2d90\n  Attachment Status: pending (may be 'unknown' - acceptable)\n  Storage Status: provisioned\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 70,
+              "Time": "2026-05-19T13:05:12.582999128Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 72,
+              "Time": "2026-05-19T13:05:12.583033048Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 33931,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 465
+            },
+            "TimelineLocation": {
+              "Order": 73,
+              "Time": "2026-05-19T13:05:12.58303405Z"
+            },
+            "Message": "should verify attachment is available on status with mount info",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 465
+            },
+            "TimelineLocation": {
+              "Offset": 2757,
+              "Order": 75,
+              "Time": "2026-05-19T13:05:12.738912069Z"
+            },
+            "Message": "should verify attachment is available on status with mount info",
+            "Duration": 155878019,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage attachments",
+          "Given a network and file storage resource"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 325
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 334
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 519
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should remove network attachment from file storage",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:05:12.73899987Z",
+        "EndTime": "2026-05-19T13:05:13.012103765Z",
+        "RunTime": 273103925,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[PUT /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=202 duration=195.013045ms traceparent=00-7417abe662872870a1dc19a0edd15246-2a086a6982724b2e-01\n[PUT /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"description\":\"Test file storage with attachment removed\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\nRemoved network attachment from file storage: fc773bd9-3adc-4ef2-b365-e8a7940b2d90\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=77.653593ms traceparent=00-0217847a1cf2548322f0ed0da847ad42-9e1f79da99edfabc-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"description\":\"Test file storage with attachment removed\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\nConfirmed attachment removed from status\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 76,
+              "Time": "2026-05-19T13:05:12.739002795Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 78,
+              "Time": "2026-05-19T13:05:12.739034683Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 31888,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 519
+            },
+            "TimelineLocation": {
+              "Order": 79,
+              "Time": "2026-05-19T13:05:12.739035664Z"
+            },
+            "Message": "should remove network attachment from file storage",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 519
+            },
+            "TimelineLocation": {
+              "Offset": 2113,
+              "Order": 81,
+              "Time": "2026-05-19T13:05:13.012091987Z"
+            },
+            "Message": "should remove network attachment from file storage",
+            "Duration": 273056313,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage attachments",
+          "Given a network and file storage resource"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 325
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 334
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 564
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should delete the file storage resource after detachment",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:05:13.012176063Z",
+        "EndTime": "2026-05-19T13:05:38.621412734Z",
+        "RunTime": 25609236671,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[DELETE /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=202 duration=113.949035ms traceparent=00-421c6876a644e72dacace142646579fb-08f822d3e0f4bd82-01\nDeleted file storage: fc773bd9-3adc-4ef2-b365-e8a7940b2d90\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=78.111508ms traceparent=00-18617350714760504e310822cf1a23cd-ff68cc4e77770134-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"deletionTime\":\"2026-05-19T13:05:13Z\",\"description\":\"Test file storage with attachment removed\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"deprovisioning\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240}}}\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=79.143683ms traceparent=00-7fef271fb192e451893b9bfa3386fb22-b43dc0d73033297c-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"deletionTime\":\"2026-05-19T13:05:13Z\",\"description\":\"Test file storage with attachment removed\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"deprovisioning\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240,\"updatedAt\":\"2026-05-19T13:05:14Z\",\"usedBytes\":0}}}\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=86.987218ms traceparent=00-fc592e932407c6b1896c3b6561283989-159a4fa9871813f8-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"deletionTime\":\"2026-05-19T13:05:13Z\",\"description\":\"Test file storage with attachment removed\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"deprovisioning\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240,\"updatedAt\":\"2026-05-19T13:05:14Z\",\"usedBytes\":0}}}\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=79.260978ms traceparent=00-d54d6cc263633e07412737b101b4c8c0-ddab7da2a1148aa8-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"deletionTime\":\"2026-05-19T13:05:13Z\",\"description\":\"Test file storage with attachment removed\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"deprovisioning\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240,\"updatedAt\":\"2026-05-19T13:05:14Z\",\"usedBytes\":0}}}\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=200 duration=79.234759ms traceparent=00-48c4e826a160aded78355cf30b38add4-97b8eea0ceef134f-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:05:02Z\",\"deletionTime\":\"2026-05-19T13:05:13Z\",\"description\":\"Test file storage with attachment removed\",\"healthStatus\":\"unknown\",\"id\":\"fc773bd9-3adc-4ef2-b365-e8a7940b2d90\",\"modifiedBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"modifiedTime\":\"2026-05-19T13:05:12Z\",\"name\":\"test-attach-storage-b2jdhcfs\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"deprovisioning\"},\"spec\":{\"attachments\":{\"networkIds\":[]},\"sizeGiB\":10,\"storageType\":{\"NFS\":{\"rootSquash\":false}}},\"status\":{\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\",\"storageClassId\":\"53ff0ab7-d932-42ba-bd40-a15b33406f0e\",\"usage\":{\"capacityBytes\":10737418240,\"updatedAt\":\"2026-05-19T13:05:14Z\",\"usedBytes\":0}}}\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] status=404 duration=78.707795ms traceparent=00-160cd5dda715b9b8ca1694cc50c3e8b8-1ff2c47f83e99eb1-01\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] response body: {\"error\":\"not_found\",\"error_description\":\"resource not found\",\"trace_id\":\"160cd5dda715b9b8ca1694cc50c3e8b8\"}\n[GET /api/v2/filestorage/fc773bd9-3adc-4ef2-b365-e8a7940b2d90] UNEXPECTED STATUS expected=200 got=404 body={\"error\":\"not_found\",\"error_description\":\"resource not found\",\"trace_id\":\"160cd5dda715b9b8ca1694cc50c3e8b8\"} traceID=160cd5dda715b9b8ca1694cc50c3e8b8 spanID=1ff2c47f83e99eb1\nTRACE CONTEXT: Use traceID=160cd5dda715b9b8ca1694cc50c3e8b8 spanID=1ff2c47f83e99eb1 to search logs for this request\nConfirmed file storage deleted: fc773bd9-3adc-4ef2-b365-e8a7940b2d90\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 82,
+              "Time": "2026-05-19T13:05:13.012181702Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 84,
+              "Time": "2026-05-19T13:05:13.012206749Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 25047,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 564
+            },
+            "TimelineLocation": {
+              "Order": 85,
+              "Time": "2026-05-19T13:05:13.012207751Z"
+            },
+            "Message": "should delete the file storage resource after detachment",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 564
+            },
+            "TimelineLocation": {
+              "Offset": 6413,
+              "Order": 87,
+              "Time": "2026-05-19T13:05:38.621399784Z"
+            },
+            "Message": "should delete the file storage resource after detachment",
+            "Duration": 25609192033,
+            "NodeType": "It"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "File Storage Management",
+          "When managing file storage attachments",
+          "Given a network and file storage resource"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 41
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 325
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+            "LineNumber": 334
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+          "LineNumber": 586
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should delete the network resource",
+        "State": "passed",
+        "StartTime": "2026-05-19T13:05:38.621509239Z",
+        "EndTime": "2026-05-19T13:05:43.898063691Z",
+        "RunTime": 5276554452,
+        "ParallelProcess": 1,
+        "NumAttempts": 1,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0,
+        "CapturedGinkgoWriterOutput": "[DELETE /api/v2/networks/cc4e44db-5bde-477c-a5f8-815e6a80e71c] status=202 duration=117.93645ms traceparent=00-884bfa027196e65d282326108c45d2ff-fea1ba12d07ce760-01\nDeleted network: cc4e44db-5bde-477c-a5f8-815e6a80e71c\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=78.633672ms traceparent=00-cffff04d7bc468d9a42aca2691e08af0-3eb667713b8ce1b3-01\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"createdBy\":\"f818f846-bd08-4680-bb79-0e0575fc2bbc\",\"creationTime\":\"2026-05-19T13:04:41Z\",\"description\":\"Test network for storage attachment\",\"healthStatus\":\"unknown\",\"id\":\"cc4e44db-5bde-477c-a5f8-815e6a80e71c\",\"name\":\"test-attach-network-5jb65x6h\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"ca801b39-ed9c-4580-8ae1-87217da48de3\",\"creationTime\":\"2026-02-11T10:43:28Z\",\"description\":\"Test network for testing API automation\",\"healthStatus\":\"unknown\",\"id\":\"d88fdb92-27ea-4126-8c6a-7033871c8cec\",\"name\":\"api-automation-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"qa-testaccount02@nscale.com\",\"creationTime\":\"2026-03-03T09:28:08Z\",\"healthStatus\":\"unknown\",\"id\":\"ef8dc366-e50b-4b13-9383-3bee3c2bc9a0\",\"name\":\"pj-cool-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}]\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] status=200 duration=79.079085ms traceparent=00-d445c8a94debed9332f50176a6cea5d0-fc7b87961ce2214d-01\n[GET /api/v2/networks?organizationID=c72d8d75-efcc-4280-ae87-ca4ccc414c53\u0026projectID=ca189f71-9180-473e-b88e-5aeb32c5289d\u0026regionID=62f35744-1abd-47b8-a850-cfaa03fd3ca6] response body: [{\"metadata\":{\"createdBy\":\"ca801b39-ed9c-4580-8ae1-87217da48de3\",\"creationTime\":\"2026-02-11T10:43:28Z\",\"description\":\"Test network for testing API automation\",\"healthStatus\":\"unknown\",\"id\":\"d88fdb92-27ea-4126-8c6a-7033871c8cec\",\"name\":\"api-automation-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[\"8.8.8.8\",\"8.8.4.4\"]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}},{\"metadata\":{\"createdBy\":\"qa-testaccount02@nscale.com\",\"creationTime\":\"2026-03-03T09:28:08Z\",\"healthStatus\":\"unknown\",\"id\":\"ef8dc366-e50b-4b13-9383-3bee3c2bc9a0\",\"name\":\"pj-cool-network\",\"organizationId\":\"c72d8d75-efcc-4280-ae87-ca4ccc414c53\",\"projectId\":\"ca189f71-9180-473e-b88e-5aeb32c5289d\",\"provisioningStatus\":\"provisioned\"},\"spec\":{\"dnsNameservers\":[]},\"status\":{\"prefix\":\"10.0.1.0/24\",\"regionId\":\"62f35744-1abd-47b8-a850-cfaa03fd3ca6\"}}]\nConfirmed network deleted: cc4e44db-5bde-477c-a5f8-815e6a80e71c\n",
+        "SpecEvents": [
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 88,
+              "Time": "2026-05-19T13:05:38.621512383Z"
+            },
+            "Message": "TOP-LEVEL",
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/suite_test.go",
+              "LineNumber": 58
+            },
+            "TimelineLocation": {
+              "Order": 90,
+              "Time": "2026-05-19T13:05:38.621539364Z"
+            },
+            "Message": "TOP-LEVEL",
+            "Duration": 26981,
+            "NodeType": "BeforeEach"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 586
+            },
+            "TimelineLocation": {
+              "Order": 91,
+              "Time": "2026-05-19T13:05:38.621540265Z"
+            },
+            "Message": "should delete the network resource",
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 586
+            },
+            "TimelineLocation": {
+              "Offset": 3682,
+              "Order": 93,
+              "Time": "2026-05-19T13:05:43.898027477Z"
+            },
+            "Message": "should delete the network resource",
+            "Duration": 5276487202,
+            "NodeType": "It"
+          },
+          {
+            "SpecEventType": "Node",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 617
+            },
+            "TimelineLocation": {
+              "Offset": 3682,
+              "Order": 94,
+              "Time": "2026-05-19T13:05:43.898040046Z"
+            },
+            "Message": "When managing file storage attachments",
+            "NodeType": "AfterAll"
+          },
+          {
+            "SpecEventType": "Node (End)",
+            "CodeLocation": {
+              "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/filestorage_test.go",
+              "LineNumber": 617
+            },
+            "TimelineLocation": {
+              "Offset": 3682,
+              "Order": 96,
+              "Time": "2026-05-19T13:05:43.898061618Z"
+            },
+            "Message": "When managing file storage attachments",
+            "Duration": 21572,
+            "NodeType": "AfterAll"
+          }
+        ]
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region Discovery",
+          "When listing regions",
+          "Given valid organization access"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 35
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 37
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 38
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return all available regions",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898117362Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region Discovery",
+          "When listing regions",
+          "Given invalid parameters"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 35
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 60
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 61
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should reject requests with empty organization ID",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898124873Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region Discovery",
+          "When listing regions",
+          "Given invalid parameters"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 35
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 60
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 72
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should reject requests with invalid organization ID format",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898132234Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region Discovery",
+          "When listing regions",
+          "Given the region is private to the requesting organization"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 35
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 83
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 84
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should be visible to the owning organization",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898139024Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "Region Discovery",
+          "When listing regions",
+          "Given the region is private to a different organization"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 35
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 36
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+            "LineNumber": 102
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/regions_test.go",
+          "LineNumber": 103
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should not be visible to other organizations",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898145113Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SecurityGroup",
+          "When managing security groups",
+          "Given a network fixture and valid configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+          "LineNumber": 69
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should create a security group with correct response fields",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898157221Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SecurityGroup",
+          "When managing security groups",
+          "Given a network fixture and valid configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+          "LineNumber": 87
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should appear in the list filtered by org, project and region",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898171903Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SecurityGroup",
+          "When managing security groups",
+          "Given a network fixture and valid configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+          "LineNumber": 105
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should update rules and verify the change persists on re-GET",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898176971Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SecurityGroup",
+          "When managing security groups",
+          "Given a network fixture and valid configuration"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 39
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 68
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+          "LineNumber": 137
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should delete the security group and confirm it is no longer found",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898182119Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      },
+      {
+        "ContainerHierarchyTexts": [
+          "SecurityGroup",
+          "When getting a non-existent security group",
+          "Given a non-existent security group ID"
+        ],
+        "ContainerHierarchyLocations": [
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 38
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 156
+          },
+          {
+            "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+            "LineNumber": 157
+          }
+        ],
+        "ContainerHierarchyLabels": [
+          [],
+          [],
+          []
+        ],
+        "LeafNodeType": "It",
+        "LeafNodeLocation": {
+          "FileName": "/home/runner/work/uni-region/uni-region/test/api/suites/securitygroups_test.go",
+          "LineNumber": 158
+        },
+        "LeafNodeLabels": [],
+        "LeafNodeText": "should return not found",
+        "State": "skipped",
+        "StartTime": "2026-05-19T13:05:43.898188699Z",
+        "EndTime": "0001-01-01T00:00:00Z",
+        "RunTime": 0,
+        "ParallelProcess": 1,
+        "NumAttempts": 0,
+        "MaxFlakeAttempts": 0,
+        "MaxMustPassRepeatedly": 0
+      }
+    ]
+  }
+]
