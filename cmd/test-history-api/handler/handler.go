@@ -69,6 +69,8 @@ func (h *handlers) ingest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	applyDefaults(body.Events)
+
 	if err := validateAttempts(body.Events); err != nil {
 		writeError(w, http.StatusBadRequest, "VALIDATION_ERROR", err.Error())
 		return
@@ -162,6 +164,31 @@ func (h *handlers) auth(r *http.Request) bool {
 	return strings.TrimPrefix(authHeader, "Bearer ") == h.token
 }
 
+// applyDefaults fills in metadata fields that have safe fallbacks so callers
+// don't lose data when optional context (env, framework, timestamps) is missing.
+// Identity and analytics fields (event_id, repo, suite, run_id, test_id, status)
+// are left for validateAttempts to enforce — they cannot be defaulted meaningfully.
+func applyDefaults(attempts []event.TestAttempt) {
+	now := time.Now().UTC()
+	for i := range attempts {
+		if attempts[i].Framework == "" {
+			attempts[i].Framework = "unknown"
+		}
+		if attempts[i].Env == "" {
+			attempts[i].Env = "unknown"
+		}
+		if attempts[i].RunAttempt == 0 {
+			attempts[i].RunAttempt = 1
+		}
+		if attempts[i].StartedAt.IsZero() {
+			attempts[i].StartedAt = now
+		}
+	}
+}
+
+// validateAttempts checks the fields that cannot be inferred or defaulted.
+// Metadata fields (framework, env, run_attempt, started_at) are handled by
+// applyDefaults before this is called.
 func validateAttempts(attempts []event.TestAttempt) error {
 	for i, a := range attempts {
 		if a.EventID == "" {
@@ -173,12 +200,6 @@ func validateAttempts(attempts []event.TestAttempt) error {
 		if a.Suite == "" {
 			return fmt.Errorf("events[%d]: suite is required", i)
 		}
-		if a.Framework == "" {
-			return fmt.Errorf("events[%d]: framework is required", i)
-		}
-		if a.Env == "" {
-			return fmt.Errorf("events[%d]: env is required", i)
-		}
 		if a.RunID == "" {
 			return fmt.Errorf("events[%d]: run_id is required", i)
 		}
@@ -187,9 +208,6 @@ func validateAttempts(attempts []event.TestAttempt) error {
 		}
 		if a.Status == "" {
 			return fmt.Errorf("events[%d]: status is required", i)
-		}
-		if a.StartedAt.IsZero() {
-			return fmt.Errorf("events[%d]: started_at is required", i)
 		}
 	}
 	return nil

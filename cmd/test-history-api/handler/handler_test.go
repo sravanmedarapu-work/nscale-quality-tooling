@@ -112,15 +112,57 @@ func TestIngest_empty_events(t *testing.T) {
 }
 
 func TestIngest_missing_required_field(t *testing.T) {
-	h := newHandler(&mockStore{})
-	bad := validAttempt()
-	bad.Repo = ""
-	body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{bad}})
+	// Only identity/analytics fields (event_id, repo, suite, run_id, test_id, status)
+	// are required. Metadata fields (framework, env, started_at, run_attempt) get defaults.
+	required := []struct {
+		name  string
+		blank func(a *event.TestAttempt)
+	}{
+		{"event_id", func(a *event.TestAttempt) { a.EventID = "" }},
+		{"repo", func(a *event.TestAttempt) { a.Repo = "" }},
+		{"suite", func(a *event.TestAttempt) { a.Suite = "" }},
+		{"run_id", func(a *event.TestAttempt) { a.RunID = "" }},
+		{"test_id", func(a *event.TestAttempt) { a.TestID = "" }},
+		{"status", func(a *event.TestAttempt) { a.Status = "" }},
+	}
+	for _, tc := range required {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			h := newHandler(&mockStore{})
+			bad := validAttempt()
+			tc.blank(&bad)
+			body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{bad}})
+			req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
+			req.Header.Set("Authorization", "Bearer secret-token")
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+			assert.Equal(t, http.StatusBadRequest, rec.Code, "missing %s must be 400", tc.name)
+		})
+	}
+}
+
+func TestIngest_applies_defaults(t *testing.T) {
+	ms := &mockStore{}
+	h := newHandler(ms)
+
+	// Event with only the 6 required fields — no framework, env, started_at, run_attempt.
+	minimal := event.TestAttempt{
+		EventID: "evt-min", Repo: "org/repo", Suite: "s",
+		RunID: "1", TestID: "f::t", Status: event.StatusPassed,
+	}
+	body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{minimal}})
 	req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
 	req.Header.Set("Authorization", "Bearer secret-token")
 	rec := httptest.NewRecorder()
 	h.ServeHTTP(rec, req)
-	assert.Equal(t, http.StatusBadRequest, rec.Code)
+
+	require.Equal(t, http.StatusAccepted, rec.Code)
+	require.Len(t, ms.upserted, 1)
+	stored := ms.upserted[0]
+	assert.Equal(t, "unknown", stored.Framework, "framework defaults to unknown")
+	assert.Equal(t, "unknown", stored.Env, "env defaults to unknown")
+	assert.Equal(t, 1, stored.RunAttempt, "run_attempt defaults to 1")
+	assert.False(t, stored.StartedAt.IsZero(), "started_at defaults to now")
 }
 
 func TestIngest_db_unavailable_returns_503(t *testing.T) {

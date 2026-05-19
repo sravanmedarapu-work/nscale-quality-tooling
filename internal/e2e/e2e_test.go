@@ -348,21 +348,23 @@ func TestIngest_MissingEventID(t *testing.T) {
 }
 
 func TestIngest_MissingRequiredFields(t *testing.T) {
-	requiredFields := []string{"repo", "suite", "framework", "env", "run_id", "test_id", "status"}
-	for _, field := range requiredFields {
+	// Only identity/analytics fields are required. Metadata fields (framework, env,
+	// started_at, run_attempt) are silently defaulted so data is never lost.
+	required := []string{"event_id", "repo", "suite", "run_id", "test_id", "status"}
+	for _, field := range required {
 		field := field
 		t.Run("missing_"+field, func(t *testing.T) {
 			evt := map[string]any{
-				"event_id":   "eid-" + field,
-				"repo":       e2eRepo,
-				"suite":      "s",
-				"framework":  "ginkgo",
-				"env":        "dev",
-				"run_id":     "1",
+				"event_id":    "eid-" + field,
+				"repo":        e2eRepo,
+				"suite":       "s",
+				"framework":   "ginkgo",
+				"env":         "dev",
+				"run_id":      "1",
 				"run_attempt": 1,
-				"test_id":    "t::test",
-				"status":     "passed",
-				"started_at": time.Now(),
+				"test_id":     "t::test",
+				"status":      "passed",
+				"started_at":  time.Now(),
 			}
 			delete(evt, field)
 			resp := doPost(t, "/v1/runs/ingest", map[string]any{"events": []any{evt}}, e2eToken)
@@ -370,6 +372,36 @@ func TestIngest_MissingRequiredFields(t *testing.T) {
 			assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
 		})
 	}
+}
+
+// TestIngest_DefaultsApplied verifies that events missing optional metadata fields
+// (framework, env, run_attempt, started_at) are still accepted and stored — no data lost.
+func TestIngest_DefaultsApplied(t *testing.T) {
+	suite := suiteName(t)
+	rid := runID()
+	now := time.Now().UTC().Truncate(time.Millisecond)
+
+	// Minimal event: only the 6 required identity/analytics fields.
+	batch := []map[string]any{
+		{
+			"event_id":  event.NewEventID(e2eRepo, rid, 1, "pkg::TestDefaulted", 0),
+			"repo":      e2eRepo,
+			"suite":     suite,
+			"run_id":    rid,
+			"test_id":   "pkg::TestDefaulted",
+			"status":    "passed",
+			"started_at": now,
+			// framework, env, run_attempt intentionally omitted
+		},
+	}
+
+	resp := doPost(t, "/v1/runs/ingest", map[string]any{"events": batch}, e2eToken)
+	defer resp.Body.Close()
+	require.Equal(t, http.StatusAccepted, resp.StatusCode)
+
+	// The event should be queryable via trends using the defaulted env="unknown".
+	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "unknown", "30d")))
+	assert.Equal(t, 1, totalAttempts(tr), "event stored under env=unknown default")
 }
 
 func TestHistory_MissingParams(t *testing.T) {
