@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  # ── Unit tests ────────────────────────────────────────────────────────────
+  # Fast, no Docker required. Covers parsers, normalizer, event model,
+  # HTTP handler (mock store), and CLI ingest (mock HTTP server).
+  unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Unit tests
+        run: go test -count=1 -timeout 60s ./internal/... ./cmd/...
+
+  # ── Integration tests ─────────────────────────────────────────────────────
+  # Spin up a real Postgres via testcontainers (Docker-in-Docker on the runner).
+  # Covers UpsertAttempts idempotency, QueryHistory, and QueryTrends.
+  integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Integration tests (testcontainers)
+        run: go test -count=1 -timeout 120s -tags integration ./internal/store/...
+
+  # ── E2E tests ─────────────────────────────────────────────────────────────
+  # Full lifecycle: parse fixture → CLI ingest → REST API → Postgres → query.
+  # Uses a Postgres service container so testcontainers is not needed inside
+  # the test binary (DATABASE_URL is set from the service container).
+  #
+  # Coverage:
+  #   - All three parsers (Playwright JSON, Ginkgo v2 JSON, JUnit XML)
+  #   - Real fixtures from uni-compute (dev + uat) and uni-region (uat)
+  #   - Every HTTP endpoint: /healthz, /v1/runs/ingest, /v1/tests/history, /v1/tests/trends
+  #   - Auth (missing token, wrong token), validation (empty/missing fields)
+  #   - Idempotency (double-ingest produces no duplicate rows)
+  #   - Window filtering (7d / 30d / 90d)
+  #   - Empty-result handling (no data → zero summary, empty buckets)
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [unit, integration]
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: test_history
+          POSTGRES_PASSWORD: test_history
+          POSTGRES_DB: test_history
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U test_history"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DATABASE_URL: postgres://test_history:test_history@localhost:5432/test_history?sslmode=disable
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Apply migrations
+        env:
+          PGPASSWORD: test_history
+        run: psql -h localhost -U test_history -d test_history -f migrations/001_initial_schema.sql
+
+      - name: E2E tests
+        run: go test -count=1 -timeout 180s -tags e2e -v ./internal/e2e/...
