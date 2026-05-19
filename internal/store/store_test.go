@@ -18,7 +18,9 @@ import (
 
 func TestStoreSuite(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Store Integration Suite")
+	suiteConfig, reporterConfig := GinkgoConfiguration()
+	reporterConfig.Verbose = true
+	RunSpecs(t, "Store Integration Suite", suiteConfig, reporterConfig)
 }
 
 func setupDB(ctx context.Context) *store.Store {
@@ -47,6 +49,7 @@ func setupDB(ctx context.Context) *store.Store {
 		pgc.Terminate(ctx) //nolint:errcheck
 	})
 
+	GinkgoWriter.Printf("postgres started at: %s\n", dsn)
 	return s
 }
 
@@ -62,76 +65,84 @@ var _ = Describe("Store", func() {
 	})
 
 	Describe("UpsertAttempts", func() {
-		It("is idempotent — replaying the same event does not create a duplicate row", func() {
-			now := time.Now().UTC().Truncate(time.Millisecond)
-			attempts := []event.TestAttempt{
-				{
-					EventID: "evt-001", Repo: "org/repo", Suite: "s", Framework: "playwright",
-					Env: "dev", Branch: "main", RunID: "1", RunAttempt: 1,
-					TestID: "file::test1", Status: event.StatusPassed, DurationMS: 500, StartedAt: now,
-				},
-			}
+		Context("When the same event is ingested twice", func() {
+			It("should be idempotent and not create duplicate rows", func() {
+				now := time.Now().UTC().Truncate(time.Millisecond)
+				attempts := []event.TestAttempt{
+					{
+						EventID: "evt-001", Repo: "org/repo", Suite: "s", Framework: "playwright",
+						Env: "dev", Branch: "main", RunID: "1", RunAttempt: 1,
+						TestID: "file::test1", Status: event.StatusPassed, DurationMS: 500, StartedAt: now,
+					},
+				}
 
-			Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
-			Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed(), "replay must not error")
+				Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
+				Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed(), "replay must not error")
 
-			var count int
-			s.DB().QueryRowContext(ctx, `SELECT count(*) FROM test_case_attempts WHERE event_id = 'evt-001'`).Scan(&count)
-			Expect(count).To(Equal(1), "idempotent: duplicate event_id must not create two rows")
+				var count int
+				s.DB().QueryRowContext(ctx, `SELECT count(*) FROM test_case_attempts WHERE event_id = 'evt-001'`).Scan(&count)
+				Expect(count).To(Equal(1), "duplicate event_id must not create two rows")
+				GinkgoWriter.Printf("idempotency confirmed: %d row after 2 upserts\n", count)
+			})
 		})
 	})
 
 	Describe("QueryHistory", func() {
-		It("returns correct aggregate statistics", func() {
-			now := time.Now().UTC().Truncate(time.Millisecond)
-			attempts := []event.TestAttempt{
-				{
-					EventID: "h1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-					RunID: "run-1", RunAttempt: 1, TestID: "f::t",
-					Status: event.StatusPassed, DurationMS: 400,
-					CommitSHA: "commit-abc",
-					StartedAt: now.Add(-time.Minute),
-				},
-				{
-					EventID: "h2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-					RunID: "run-2", RunAttempt: 1, TestID: "f::t",
-					Status: event.StatusFailed, DurationMS: 900,
-					CommitSHA: "commit-def", FailureMessageExcerpt: "panic: nil pointer",
-					StartedAt: now,
-				},
-			}
-			Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
+		Context("When two attempts exist (1 passed, 1 failed)", func() {
+			It("should return correct aggregate statistics with failure excerpt and commit SHA", func() {
+				now := time.Now().UTC().Truncate(time.Millisecond)
+				attempts := []event.TestAttempt{
+					{
+						EventID: "h1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+						RunID: "run-1", RunAttempt: 1, TestID: "f::t",
+						Status: event.StatusPassed, DurationMS: 400,
+						CommitSHA: "commit-abc",
+						StartedAt: now.Add(-time.Minute),
+					},
+					{
+						EventID: "h2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+						RunID: "run-2", RunAttempt: 1, TestID: "f::t",
+						Status: event.StatusFailed, DurationMS: 900,
+						CommitSHA: "commit-def", FailureMessageExcerpt: "panic: nil pointer",
+						StartedAt: now,
+					},
+				}
+				Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
 
-			hs, err := s.QueryHistory(ctx, "org/repo", "s", "dev", "f::t", "30d")
-			Expect(err).NotTo(HaveOccurred())
-			Expect(hs.Attempts).To(Equal(2))
-			Expect(hs.Passed).To(Equal(1))
-			Expect(hs.Failed).To(Equal(1))
-			Expect(hs.FailureRate).To(BeNumerically("~", 50.0, 0.1))
+				hs, err := s.QueryHistory(ctx, "org/repo", "s", "dev", "f::t", "30d")
+				Expect(err).NotTo(HaveOccurred())
+				Expect(hs.Attempts).To(Equal(2))
+				Expect(hs.Passed).To(Equal(1))
+				Expect(hs.Failed).To(Equal(1))
+				Expect(hs.FailureRate).To(BeNumerically("~", 50.0, 0.1))
 
-			// Last failure message and most-recent commit SHA are surfaced.
-			Expect(hs.LastFailureExcerpt).NotTo(BeNil())
-			Expect(*hs.LastFailureExcerpt).To(Equal("panic: nil pointer"))
-			Expect(hs.LastCommitSHA).NotTo(BeNil())
-			Expect(*hs.LastCommitSHA).To(Equal("commit-def"), "most recent run's commit SHA")
+				Expect(hs.LastFailureExcerpt).NotTo(BeNil())
+				Expect(*hs.LastFailureExcerpt).To(Equal("panic: nil pointer"))
+				Expect(hs.LastCommitSHA).NotTo(BeNil())
+				Expect(*hs.LastCommitSHA).To(Equal("commit-def"), "most recent run's commit SHA")
+				GinkgoWriter.Printf("failure rate: %.1f%%, last commit: %s\n", hs.FailureRate, *hs.LastCommitSHA)
+			})
 		})
 	})
 
 	Describe("QueryTrends", func() {
-		It("groups attempts into buckets", func() {
-			now := time.Now().UTC().Truncate(time.Millisecond)
-			attempts := []event.TestAttempt{
-				{EventID: "t1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-					RunID: "1", RunAttempt: 1, TestID: "f::t", Status: event.StatusPassed, DurationMS: 300, StartedAt: now},
-				{EventID: "t2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-					RunID: "2", RunAttempt: 1, TestID: "f::t", Status: event.StatusFailed, DurationMS: 800, StartedAt: now},
-			}
-			Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
+		Context("When two attempts exist on the same day", func() {
+			It("should group them into a single bucket", func() {
+				now := time.Now().UTC().Truncate(time.Millisecond)
+				attempts := []event.TestAttempt{
+					{EventID: "t1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+						RunID: "1", RunAttempt: 1, TestID: "f::t", Status: event.StatusPassed, DurationMS: 300, StartedAt: now},
+					{EventID: "t2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+						RunID: "2", RunAttempt: 1, TestID: "f::t", Status: event.StatusFailed, DurationMS: 800, StartedAt: now},
+				}
+				Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
 
-			buckets, err := s.QueryTrends(ctx, "org/repo", "s", "dev", "7d")
-			Expect(err).NotTo(HaveOccurred())
-			Expect(buckets).To(HaveLen(1))
-			Expect(buckets[0].Attempts).To(Equal(2))
+				buckets, err := s.QueryTrends(ctx, "org/repo", "s", "dev", "7d")
+				Expect(err).NotTo(HaveOccurred())
+				Expect(buckets).To(HaveLen(1))
+				Expect(buckets[0].Attempts).To(Equal(2))
+				GinkgoWriter.Printf("trend bucket: %d attempts on %s\n", buckets[0].Attempts, buckets[0].Date)
+			})
 		})
 	})
 })

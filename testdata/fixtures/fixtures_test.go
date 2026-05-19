@@ -15,7 +15,9 @@ import (
 
 func TestFixtures(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Fixtures Suite")
+	suiteConfig, reporterConfig := GinkgoConfiguration()
+	reporterConfig.Verbose = true
+	RunSpecs(t, "Fixtures Suite", suiteConfig, reporterConfig)
 }
 
 type fixtureSet struct {
@@ -25,7 +27,7 @@ type fixtureSet struct {
 
 func testFixtureSet(fs fixtureSet) {
 	Context("ginkgo", func() {
-		It("has at least minSpecs results", func() {
+		It("should have at least the expected number of results", func() {
 			data, err := os.ReadFile(fmt.Sprintf("%s/ginkgo-results.json", fs.dir))
 			Expect(err).NotTo(HaveOccurred())
 			results, err := ginkgo.Parse(bytes.NewReader(data))
@@ -36,7 +38,7 @@ func testFixtureSet(fs fixtureSet) {
 	})
 
 	Context("junit", func() {
-		It("has at least minSpecs results", func() {
+		It("should have at least the expected number of results", func() {
 			data, err := os.ReadFile(fmt.Sprintf("%s/junit.xml", fs.dir))
 			Expect(err).NotTo(HaveOccurred())
 			results, err := junit.Parse(bytes.NewReader(data))

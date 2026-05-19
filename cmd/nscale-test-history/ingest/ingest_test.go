@@ -18,18 +18,19 @@ import (
 
 func TestIngestSuite(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Ingest Suite")
+	suiteConfig, reporterConfig := GinkgoConfiguration()
+	reporterConfig.Verbose = true
+	RunSpecs(t, "Ingest Suite", suiteConfig, reporterConfig)
 }
 
-// fixtureDir returns the absolute path to testdata/fixtures.
 func fixtureDir() string {
 	_, filename, _, _ := runtime.Caller(0)
 	return filepath.Join(filepath.Dir(filename), "..", "..", "..", "testdata", "fixtures")
 }
 
 var _ = Describe("ingest.Run", func() {
-	Describe("playwright JSON", func() {
-		It("sends 4 attempts and writes a spool file", func() {
+	Context("When ingesting a Playwright JSON report", func() {
+		It("should send 4 attempts and write a spool file", func() {
 			fixtures := fixtureDir()
 			var received []event.TestAttempt
 
@@ -67,14 +68,15 @@ var _ = Describe("ingest.Run", func() {
 				Expect(a.Suite).To(Equal("console-e2e"))
 				Expect(a.EventID).To(HaveLen(64))
 			}
+			GinkgoWriter.Printf("ingested %d playwright attempts\n", len(received))
 
 			_, statErr := os.Stat(filepath.Join(dir, ".test-history", "events.ndjson"))
 			Expect(statErr).NotTo(HaveOccurred(), "spool file must be written")
 		})
 	})
 
-	Describe("ginkgo JSON", func() {
-		It("sends 3 attempts with framework=ginkgo", func() {
+	Context("When ingesting a Ginkgo JSON report", func() {
+		It("should send 3 attempts with framework=ginkgo", func() {
 			fixtures := fixtureDir()
 			var received []event.TestAttempt
 
@@ -106,11 +108,12 @@ var _ = Describe("ingest.Run", func() {
 
 			Expect(received).To(HaveLen(3))
 			Expect(received[0].Framework).To(Equal("ginkgo"))
+			GinkgoWriter.Printf("ingested %d ginkgo attempts\n", len(received))
 		})
 	})
 
-	Describe("JUnit fallback", func() {
-		It("sends 3 attempts from junit XML", func() {
+	Context("When ingesting a JUnit XML report (pytest fallback)", func() {
+		It("should send 3 attempts from the junit XML", func() {
 			fixtures := fixtureDir()
 			var received []event.TestAttempt
 
@@ -141,14 +144,15 @@ var _ = Describe("ingest.Run", func() {
 			})
 
 			Expect(received).To(HaveLen(3))
+			GinkgoWriter.Printf("ingested %d junit attempts\n", len(received))
 		})
 	})
 
-	Describe("API down", func() {
-		It("exits gracefully and still writes the spool file", func() {
+	Context("When the API is unavailable", func() {
+		It("should exit gracefully and still write the spool file", func() {
 			fixtures := fixtureDir()
 
-			GinkgoT().Setenv("TEST_HISTORY_API_URL", "http://127.0.0.1:19999") // nothing listening
+			GinkgoT().Setenv("TEST_HISTORY_API_URL", "http://127.0.0.1:19999")
 			GinkgoT().Setenv("TEST_HISTORY_TOKEN", "test-token")
 			GinkgoT().Setenv("GITHUB_REPOSITORY", "org/repo")
 			GinkgoT().Setenv("GITHUB_RUN_ID", "55")
@@ -159,20 +163,21 @@ var _ = Describe("ingest.Run", func() {
 			DeferCleanup(os.Chdir, oldDir)
 			Expect(os.Chdir(dir)).To(Succeed())
 
-			// Must not panic
-			ingest.Run([]string{
-				"--suite", "s", "--framework", "playwright", "--env", "dev",
-				"--json", filepath.Join(fixtures, "playwright-results.json"),
-			})
+			Expect(func() {
+				ingest.Run([]string{
+					"--suite", "s", "--framework", "playwright", "--env", "dev",
+					"--json", filepath.Join(fixtures, "playwright-results.json"),
+				})
+			}).NotTo(Panic())
 
 			_, statErr := os.Stat(filepath.Join(dir, ".test-history", "events.ndjson"))
 			Expect(statErr).NotTo(HaveOccurred(), "spool must be written even when API is down")
+			GinkgoWriter.Printf("spool file written despite API being down\n")
 		})
 	})
 
-	Describe("missing required flags", func() {
-		It("does not panic", func() {
-			// Should not panic — just warn and return
+	Context("When required flags are missing", func() {
+		It("should not panic", func() {
 			Expect(func() {
 				ingest.Run([]string{"--suite", "s"})
 			}).NotTo(Panic())

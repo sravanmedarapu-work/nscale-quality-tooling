@@ -4,75 +4,111 @@ import (
 	"strings"
 	"testing"
 
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/event"
-	"github.com/stretchr/testify/assert"
 )
 
-func TestNewEventID_deterministic(t *testing.T) {
-	id1 := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 0)
-	id2 := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 0)
-	assert.Equal(t, id1, id2, "same inputs must produce same ID")
-	assert.Len(t, id1, 64, "SHA-256 hex is 64 chars")
+func TestEventSuite(t *testing.T) {
+	RegisterFailHandler(Fail)
+	suiteConfig, reporterConfig := GinkgoConfiguration()
+	reporterConfig.Verbose = true
+	RunSpecs(t, "Event Suite", suiteConfig, reporterConfig)
 }
 
-func TestNewEventID_unique(t *testing.T) {
-	base := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 0)
-	retry := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 1)
-	diffTest := event.NewEventID("org/repo", "123", 1, "pkg.TestBar", 0)
-	diffRun := event.NewEventID("org/repo", "456", 1, "pkg.TestFoo", 0)
+var _ = Describe("event.NewEventID", func() {
+	Context("When given identical inputs", func() {
+		It("should produce a deterministic 64-char hex ID", func() {
+			id1 := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 0)
+			id2 := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 0)
+			Expect(id1).To(Equal(id2))
+			Expect(id1).To(HaveLen(64))
+			GinkgoWriter.Printf("event ID: %s\n", id1)
+		})
+	})
 
-	assert.NotEqual(t, base, retry, "different attempt_index must differ")
-	assert.NotEqual(t, base, diffTest, "different test_id must differ")
-	assert.NotEqual(t, base, diffRun, "different run_id must differ")
-}
+	Context("When inputs differ", func() {
+		It("should produce unique IDs for different attempt indices", func() {
+			base := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 0)
+			retry := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 1)
+			Expect(base).NotTo(Equal(retry))
+		})
 
-func TestNormalizeStatus_playwright(t *testing.T) {
-	cases := []struct{ raw, want string }{
-		{"passed", event.StatusPassed},
-		{"failed", event.StatusFailed},
-		{"timedOut", event.StatusFailed},
-		{"interrupted", event.StatusFailed},
-		{"skipped", event.StatusSkipped},
-	}
-	for _, c := range cases {
-		got := event.NormalizeStatus(event.FrameworkPlaywright, c.raw)
-		assert.Equal(t, c.want, got, "playwright %q", c.raw)
-	}
-}
+		It("should produce unique IDs for different test IDs", func() {
+			base := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 0)
+			diffTest := event.NewEventID("org/repo", "123", 1, "pkg.TestBar", 0)
+			Expect(base).NotTo(Equal(diffTest))
+		})
 
-func TestNormalizeStatus_ginkgo(t *testing.T) {
-	cases := []struct{ raw, want string }{
-		{"passed", event.StatusPassed},
-		{"failed", event.StatusFailed},
-		{"panicked", event.StatusFailed},
-		{"skipped", event.StatusSkipped},
-		{"pending", event.StatusSkipped},
-	}
-	for _, c := range cases {
-		got := event.NormalizeStatus(event.FrameworkGinkgo, c.raw)
-		assert.Equal(t, c.want, got, "ginkgo %q", c.raw)
-	}
-}
+		It("should produce unique IDs for different run IDs", func() {
+			base := event.NewEventID("org/repo", "123", 1, "pkg.TestFoo", 0)
+			diffRun := event.NewEventID("org/repo", "456", 1, "pkg.TestFoo", 0)
+			Expect(base).NotTo(Equal(diffRun))
+		})
+	})
+})
 
-func TestNormalizeStatus_pytest(t *testing.T) {
-	cases := []struct{ raw, want string }{
-		{"passed", event.StatusPassed},
-		{"failed", event.StatusFailed},
-		{"error", event.StatusFailed},
-		{"skipped", event.StatusSkipped},
-		{"xfailed", event.StatusSkipped},
-	}
-	for _, c := range cases {
-		got := event.NormalizeStatus(event.FrameworkPytest, c.raw)
-		assert.Equal(t, c.want, got, "pytest %q", c.raw)
-	}
-}
+var _ = Describe("event.NormalizeStatus", func() {
+	Context("When framework is Playwright", func() {
+		DescribeTable("should map raw status to canonical status",
+			func(raw, want string) {
+				got := event.NormalizeStatus(event.FrameworkPlaywright, raw)
+				Expect(got).To(Equal(want))
+				GinkgoWriter.Printf("playwright %q → %q\n", raw, got)
+			},
+			Entry("passed → passed", "passed", event.StatusPassed),
+			Entry("failed → failed", "failed", event.StatusFailed),
+			Entry("timedOut → failed", "timedOut", event.StatusFailed),
+			Entry("interrupted → failed", "interrupted", event.StatusFailed),
+			Entry("skipped → skipped", "skipped", event.StatusSkipped),
+		)
+	})
 
-func TestTruncateExcerpt(t *testing.T) {
-	short := "hello"
-	assert.Equal(t, short, event.TruncateExcerpt(short))
+	Context("When framework is Ginkgo", func() {
+		DescribeTable("should map raw status to canonical status",
+			func(raw, want string) {
+				got := event.NormalizeStatus(event.FrameworkGinkgo, raw)
+				Expect(got).To(Equal(want))
+				GinkgoWriter.Printf("ginkgo %q → %q\n", raw, got)
+			},
+			Entry("passed → passed", "passed", event.StatusPassed),
+			Entry("failed → failed", "failed", event.StatusFailed),
+			Entry("panicked → failed", "panicked", event.StatusFailed),
+			Entry("skipped → skipped", "skipped", event.StatusSkipped),
+			Entry("pending → skipped", "pending", event.StatusSkipped),
+		)
+	})
 
-	long := strings.Repeat("a", 600)
-	got := event.TruncateExcerpt(long)
-	assert.Len(t, []rune(got), 500)
-}
+	Context("When framework is Pytest", func() {
+		DescribeTable("should map raw status to canonical status",
+			func(raw, want string) {
+				got := event.NormalizeStatus(event.FrameworkPytest, raw)
+				Expect(got).To(Equal(want))
+				GinkgoWriter.Printf("pytest %q → %q\n", raw, got)
+			},
+			Entry("passed → passed", "passed", event.StatusPassed),
+			Entry("failed → failed", "failed", event.StatusFailed),
+			Entry("error → failed", "error", event.StatusFailed),
+			Entry("skipped → skipped", "skipped", event.StatusSkipped),
+			Entry("xfailed → skipped", "xfailed", event.StatusSkipped),
+		)
+	})
+})
+
+var _ = Describe("event.TruncateExcerpt", func() {
+	Context("When the message is short", func() {
+		It("should return it unchanged", func() {
+			short := "hello"
+			Expect(event.TruncateExcerpt(short)).To(Equal(short))
+		})
+	})
+
+	Context("When the message exceeds 500 runes", func() {
+		It("should truncate to exactly 500 runes", func() {
+			long := strings.Repeat("a", 600)
+			got := event.TruncateExcerpt(long)
+			Expect([]rune(got)).To(HaveLen(500))
+		})
+	})
+})

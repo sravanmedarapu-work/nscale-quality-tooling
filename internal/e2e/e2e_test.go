@@ -41,7 +41,9 @@ import (
 
 func TestE2ESuite(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "E2E Suite")
+	suiteConfig, reporterConfig := GinkgoConfiguration()
+	reporterConfig.Verbose = true
+	RunSpecs(t, "E2E Suite", suiteConfig, reporterConfig)
 }
 
 const (
@@ -114,9 +116,11 @@ var _ = BeforeSuite(func() {
 		if e2eToken == "" {
 			e2eToken = e2eSecret
 		}
+		GinkgoWriter.Printf("e2e mode: black-box (external API at %s)\n", srvURL)
 		return
 	}
 
+	GinkgoWriter.Printf("e2e mode: in-process (testcontainers + httptest.Server)\n")
 	// In-process mode: spin up postgres (testcontainers) + httptest.Server.
 	ctx := context.Background()
 
@@ -229,6 +233,7 @@ func ingestFixture(suite, framework, env, jsonPath, junitPath string) {
 	if junitPath != "" {
 		args = append(args, "--junit", junitPath)
 	}
+	GinkgoWriter.Printf("ingesting fixture: suite=%s framework=%s env=%s\n", suite, framework, env)
 	ingest.Run(args)
 }
 

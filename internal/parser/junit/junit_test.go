@@ -13,7 +13,9 @@ import (
 
 func TestJUnitParser(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "JUnit Parser Suite")
+	suiteConfig, reporterConfig := GinkgoConfiguration()
+	reporterConfig.Verbose = true
+	RunSpecs(t, "JUnit Parser Suite", suiteConfig, reporterConfig)
 }
 
 func stringReader(s string) *os.File {
@@ -24,7 +26,7 @@ func stringReader(s string) *os.File {
 }
 
 var _ = Describe("junit.Parse", func() {
-	Describe("fixture file", func() {
+	Context("When parsing the real Playwright JUnit fixture", func() {
 		var f *os.File
 
 		BeforeEach(func() {
@@ -34,10 +36,11 @@ var _ = Describe("junit.Parse", func() {
 			DeferCleanup(f.Close)
 		})
 
-		It("parses 3 cases with correct fields", func() {
+		It("should return 3 cases with correct statuses and fields", func() {
 			cases, err := junit.Parse(f)
 			Expect(err).NotTo(HaveOccurred())
 			Expect(cases).To(HaveLen(3))
+			GinkgoWriter.Printf("parsed %d cases\n", len(cases))
 
 			passed := cases[0]
 			Expect(passed.Status).To(Equal(event.StatusPassed))
@@ -47,14 +50,15 @@ var _ = Describe("junit.Parse", func() {
 			failed := cases[1]
 			Expect(failed.Status).To(Equal(event.StatusFailed))
 			Expect(failed.FailureMessage).To(ContainSubstring("Timeout"))
+			GinkgoWriter.Printf("failure message: %s\n", failed.FailureMessage)
 
 			skipped := cases[2]
 			Expect(skipped.Status).To(Equal(event.StatusSkipped))
 		})
 	})
 
-	Describe("bare testsuite (no testsuites wrapper)", func() {
-		It("parses passed and failed cases", func() {
+	Context("When parsing a bare <testsuite> (no <testsuites> wrapper)", func() {
+		It("should return passed and failed cases correctly", func() {
 			xml := `<testsuite name="my-suite">
 				<testcase classname="pkg" name="TestA" time="1.0"/>
 				<testcase classname="pkg" name="TestB" time="0.5">
@@ -71,8 +75,8 @@ var _ = Describe("junit.Parse", func() {
 		})
 	})
 
-	Describe("error element", func() {
-		It("maps error to StatusFailed", func() {
+	Context("When a testcase contains an <error> element", func() {
+		It("should map error to StatusFailed", func() {
 			xml := `<testsuites><testsuite name="s">
 				<testcase classname="pkg" name="TestC" time="2.0">
 					<error message="panic: nil pointer"/>
@@ -84,6 +88,7 @@ var _ = Describe("junit.Parse", func() {
 			Expect(cases).To(HaveLen(1))
 			Expect(cases[0].Status).To(Equal(event.StatusFailed))
 			Expect(cases[0].FailureMessage).To(Equal("panic: nil pointer"))
+			GinkgoWriter.Printf("error mapped to: %s\n", cases[0].Status)
 		})
 	})
 })
