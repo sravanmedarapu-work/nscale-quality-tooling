@@ -1,10 +1,15 @@
 //go:build e2e
 
 // Package e2e_test exercises the full ingest→store→query lifecycle against a real
-// Postgres. It can run in two modes:
+// Postgres. It supports two modes:
 //
-//   - CI mode:   DATABASE_URL env var is set (service container). No Docker needed inside the test.
-//   - Local mode: DATABASE_URL is unset; testcontainers spins up Postgres automatically.
+//   - Black-box mode (CI):  TEST_HISTORY_API_URL points at the real running binary.
+//     A fresh devstack (postgres service container + API binary subprocess) is
+//     created by the CI workflow for every execution. No Docker inside the test.
+//
+//   - In-process mode (local dev):  TEST_HISTORY_API_URL is unset. testcontainers
+//     spins up Postgres and the handler is served via httptest.Server, giving a
+//     fast feedback loop without needing a running binary.
 package e2e_test
 
 import (
@@ -35,14 +40,15 @@ import (
 )
 
 const (
-	e2eToken = "e2e-secret"
-	e2eRepo  = "org/e2e-repo"
+	e2eSecret = "e2e-secret"
+	e2eRepo   = "org/e2e-repo"
 )
 
-// shared across all tests in this package
+// srvURL and e2eToken are set in TestMain. All helpers and tests use these
+// variables so they work in both black-box (real binary) and in-process modes.
 var (
-	srv         *httptest.Server
-	testStore   *store.Store
+	srvURL      string
+	e2eToken    string
 	fixturesDir string
 	moduleRoot  string
 )
@@ -91,6 +97,18 @@ func TestMain(m *testing.M) {
 	moduleRoot = filepath.Join(filepath.Dir(filename), "..", "..")
 	fixturesDir = filepath.Join(moduleRoot, "testdata", "fixtures")
 
+	// Black-box mode: CI has already started a fresh devstack (postgres +
+	// API binary). Just point at it and run.
+	if externalURL := os.Getenv("TEST_HISTORY_API_URL"); externalURL != "" {
+		srvURL = externalURL
+		e2eToken = os.Getenv("TEST_HISTORY_TOKEN")
+		if e2eToken == "" {
+			e2eToken = e2eSecret
+		}
+		os.Exit(m.Run())
+	}
+
+	// In-process mode: spin up postgres (testcontainers) + httptest.Server.
 	ctx := context.Background()
 
 	dbURL := os.Getenv("DATABASE_URL")
@@ -113,20 +131,21 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	var err error
-	testStore, err = store.New(dbURL)
+	st, err := store.New(dbURL)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "e2e: store:", err)
 		stopDB()
 		os.Exit(1)
 	}
 
-	srv = httptest.NewServer(handler.New(testStore, e2eToken))
+	e2eToken = e2eSecret
+	srv := httptest.NewServer(handler.New(st, e2eToken))
+	srvURL = srv.URL
 
 	code := m.Run()
 
 	srv.Close()
-	testStore.Close()
+	st.Close()
 	stopDB()
 	os.Exit(code)
 }
@@ -197,7 +216,7 @@ func ingestFixture(t *testing.T, suite, framework, env, jsonPath, junitPath stri
 	t.Setenv("GITHUB_RUN_ATTEMPT", "1")
 	t.Setenv("GITHUB_REF_NAME", "main")
 	t.Setenv("GITHUB_SHA", "e2esha")
-	t.Setenv("TEST_HISTORY_API_URL", srv.URL)
+	t.Setenv("TEST_HISTORY_API_URL", srvURL)
 	t.Setenv("TEST_HISTORY_TOKEN", e2eToken)
 
 	args := []string{"--suite", suite, "--framework", framework, "--env", env}
@@ -212,7 +231,7 @@ func ingestFixture(t *testing.T, suite, framework, env, jsonPath, junitPath stri
 
 func doGet(t *testing.T, path string) *http.Response {
 	t.Helper()
-	req, err := http.NewRequest(http.MethodGet, srv.URL+path, nil)
+	req, err := http.NewRequest(http.MethodGet, srvURL+path, nil)
 	require.NoError(t, err)
 	req.Header.Set("Authorization", "Bearer "+e2eToken)
 	resp, err := http.DefaultClient.Do(req)
@@ -222,7 +241,7 @@ func doGet(t *testing.T, path string) *http.Response {
 
 func doGetNoAuth(t *testing.T, path string) *http.Response {
 	t.Helper()
-	req, err := http.NewRequest(http.MethodGet, srv.URL+path, nil)
+	req, err := http.NewRequest(http.MethodGet, srvURL+path, nil)
 	require.NoError(t, err)
 	resp, err := http.DefaultClient.Do(req)
 	require.NoError(t, err)
@@ -233,7 +252,7 @@ func doPost(t *testing.T, path string, body any, token string) *http.Response {
 	t.Helper()
 	b, err := json.Marshal(body)
 	require.NoError(t, err)
-	req, err := http.NewRequest(http.MethodPost, srv.URL+path, strings.NewReader(string(b)))
+	req, err := http.NewRequest(http.MethodPost, srvURL+path, strings.NewReader(string(b)))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")
 	if token != "" {
@@ -599,25 +618,29 @@ func TestIdempotency(t *testing.T) {
 	defer resp1.Body.Close()
 	require.Equal(t, http.StatusAccepted, resp1.StatusCode)
 
-	// Ingest the same batch again — must not error and must not double-count.
+	// Ingest the exact same batch again — must not error.
 	resp2 := doPost(t, "/v1/runs/ingest", body, e2eToken)
 	defer resp2.Body.Close()
 	require.Equal(t, http.StatusAccepted, resp2.StatusCode)
 
-	var count int
-	err := testStore.DB().QueryRow(
-		"SELECT count(*) FROM test_case_attempts WHERE run_id = $1 AND suite = $2",
-		rid, suite,
-	).Scan(&count)
-	require.NoError(t, err)
-	assert.Equal(t, len(batch), count, "duplicate events must be silently dropped")
+	// Verify via the API that duplicates were silently dropped:
+	// each test must appear exactly once in history regardless of how many
+	// times we ingested.
+	for _, tc := range []struct {
+		testID string
+		status string
+	}{
+		{"pkg::TestAlpha", "passed"},
+		{"pkg::TestBeta", "failed"},
+		{"pkg::TestGamma", "skipped"},
+	} {
+		hs := decodeHistory(t, doGet(t, historyURL(e2eRepo, suite, "e2e", tc.testID, "30d")))
+		assert.Equal(t, 1, hs.Attempts, "%s: double-ingest must not create duplicate rows", tc.testID)
+	}
 
-	// Verify the history reflects the actual counts (not double).
-	hs := decodeHistory(t, doGet(t,
-		historyURL(e2eRepo, suite, "e2e", "pkg::TestBeta", "30d")))
-	assert.Equal(t, 1, hs.Attempts)
-	assert.Equal(t, 1, hs.Failed)
-	assert.InDelta(t, 100.0, hs.FailureRate, 0.1)
+	// Trends for the suite must also show 3 total attempts (not 6).
+	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "e2e", "30d")))
+	assert.Equal(t, len(batch), totalAttempts(tr), "suite total must equal original batch size")
 }
 
 // TestWindowFiltering verifies that the 7d/30d/90d window parameters
@@ -652,9 +675,8 @@ func TestWindowFiltering(t *testing.T) {
 // returns a valid zero-value summary (not an error).
 func TestHistory_EmptyResult(t *testing.T) {
 	resp := doGet(t, historyURL(e2eRepo, "nonexistent-suite", "e2e", "no::such::test", "30d"))
-	defer resp.Body.Close()
 	require.Equal(t, http.StatusOK, resp.StatusCode)
-	hs := decodeHistory(t, resp)
+	hs := decodeHistory(t, resp) // decodeHistory closes the body
 	assert.Equal(t, 0, hs.Attempts)
 }
 

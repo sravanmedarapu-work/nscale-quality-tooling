@@ -47,18 +47,22 @@ jobs:
         run: go test -count=1 -timeout 120s -tags integration ./internal/store/...
 
   # ── E2E tests ─────────────────────────────────────────────────────────────
-  # Full lifecycle: parse fixture → CLI ingest → REST API → Postgres → query.
-  # Uses a Postgres service container so testcontainers is not needed inside
-  # the test binary (DATABASE_URL is set from the service container).
+  # A fresh devstack is created for every execution:
+  #   1. Postgres service container (ephemeral, destroyed after the job)
+  #   2. Real test-history-api binary started as a subprocess
+  #
+  # Tests run in black-box mode: they hit the live binary over HTTP with no
+  # in-process shortcuts. This validates binary startup, DATABASE_URL wiring,
+  # auth token env var, and all HTTP routes end-to-end.
   #
   # Coverage:
-  #   - All three parsers (Playwright JSON, Ginkgo v2 JSON, JUnit XML)
+  #   - All three parsers via the CLI ingest function (Playwright, Ginkgo, JUnit)
   #   - Real fixtures from uni-compute (dev + uat) and uni-region (uat)
   #   - Every HTTP endpoint: /healthz, /v1/runs/ingest, /v1/tests/history, /v1/tests/trends
-  #   - Auth (missing token, wrong token), validation (empty/missing fields)
-  #   - Idempotency (double-ingest produces no duplicate rows)
+  #   - Auth (missing token, wrong token), validation (empty/missing fields, defaults)
+  #   - Idempotency verified via API (double-ingest → no duplicate counts)
   #   - Window filtering (7d / 30d / 90d)
-  #   - Empty-result handling (no data → zero summary, empty buckets)
+  #   - Empty-result handling, failure excerpt + commit SHA in history response
   e2e:
     name: E2E Tests
     runs-on: ubuntu-latest
@@ -81,6 +85,7 @@ jobs:
 
     env:
       DATABASE_URL: postgres://test_history:test_history@localhost:5432/test_history?sslmode=disable
+      TEST_HISTORY_TOKEN: e2e-secret
 
     steps:
       - uses: actions/checkout@v4
@@ -90,10 +95,25 @@ jobs:
           go-version-file: go.mod
           cache: true
 
+      - name: Build binaries
+        run: make build
+
       - name: Apply migrations
         env:
           PGPASSWORD: test_history
         run: psql -h localhost -U test_history -d test_history -f migrations/001_initial_schema.sql
 
+      - name: Start API server
+        run: |
+          PORT=8080 ./bin/test-history-api &
+          echo "Waiting for API to be healthy..."
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8080/healthz && break
+            sleep 1
+          done
+          curl -sf http://localhost:8080/healthz || { echo "API did not start"; exit 1; }
+
       - name: E2E tests
         run: go test -count=1 -timeout 180s -tags e2e -v ./internal/e2e/...
+        env:
+          TEST_HISTORY_API_URL: http://localhost:8080
