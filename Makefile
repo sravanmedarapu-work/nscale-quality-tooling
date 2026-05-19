@@ -1,4 +1,4 @@
-.PHONY: build test test-unit test-integration lint fmt dev down migrate seed clean
+.PHONY: build test test-unit test-integration lint fmt dev down migrate seed clean install-hooks
 
 MODULE := github.com/sravanmedarapu-work/nscale-quality-tooling
 BIN     := bin
@@ -42,6 +42,11 @@ seed:
 		--suite console-e2e --framework playwright --env dev \
 		--junit testdata/fixtures/playwright-junit.xml \
 		--json  testdata/fixtures/playwright-results.json
+
+install-hooks:
+	cp scripts/hooks/pre-commit .git/hooks/pre-commit
+	chmod +x .git/hooks/pre-commit
+	@echo "pre-commit hook installed"
 
 clean:
 	rm -rf $(BIN)

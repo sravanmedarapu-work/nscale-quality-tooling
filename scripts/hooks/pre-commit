@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "pre-commit: go vet ./..."
+go vet ./... || { echo "FAIL: go vet found issues — commit blocked"; exit 1; }
+
+echo "pre-commit: build -tags integration"
+go build -tags integration ./... || { echo "FAIL: integration build failed — commit blocked"; exit 1; }
+
+echo "pre-commit: build -tags e2e"
+go build -tags e2e ./... || { echo "FAIL: e2e build failed — commit blocked"; exit 1; }
+
+echo "pre-commit: unit tests"
+go test -count=1 -timeout 60s ./internal/... ./cmd/... || { echo "FAIL: unit tests failed — commit blocked"; exit 1; }
+
+echo "pre-commit: all checks passed"
