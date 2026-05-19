@@ -31,7 +31,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
-	"github.com/testcontainers/testcontainers-go/wait"
 
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/cmd/nscale-test-history/ingest"
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/cmd/test-history-api/handler"
@@ -157,9 +156,6 @@ func startPostgres(ctx context.Context) (dsn string, stop func(), err error) {
 		tcpostgres.WithUsername("test_history"),
 		tcpostgres.WithPassword("test_history"),
 		tcpostgres.BasicWaitStrategies(),
-		tcpostgres.WithWaitStrategy(
-			wait.ForLog("database system is ready to accept connections").
-				WithOccurrence(2).WithStartupTimeout(60*time.Second)),
 	)
 	if err != nil {
 		return "", nil, err
