@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -164,27 +165,37 @@ func postToAPI(apiURL, token string, attempts []event.TestAttempt) error {
 		return fmt.Errorf("marshal: %w", err)
 	}
 
-	client := &http.Client{Timeout: 30 * time.Second}
-	req, err := http.NewRequest("POST", apiURL+"/v1/runs/ingest", bytes.NewReader(body))
-	if err != nil {
-		return fmt.Errorf("build request: %w", err)
-	}
-	req.Header.Set("Authorization", "Bearer "+token)
-	req.Header.Set("Content-Type", "application/json")
+	url := apiURL + "/v1/runs/ingest"
+	fmt.Printf("[test-history] POST %s  events=%d\n", url, len(attempts))
 
-	resp, err := client.Do(req)
+	client := &http.Client{Timeout: 30 * time.Second}
+
+	doRequest := func() (*http.Response, error) {
+		req, err := http.NewRequest("POST", url, bytes.NewReader(body))
+		if err != nil {
+			return nil, fmt.Errorf("build request: %w", err)
+		}
+		req.Header.Set("Authorization", "Bearer "+token)
+		req.Header.Set("Content-Type", "application/json")
+		return client.Do(req)
+	}
+
+	resp, err := doRequest()
 	if err != nil {
-		// Retry once
+		fmt.Printf("[test-history] request failed (%v), retrying in 5s...\n", err)
 		time.Sleep(5 * time.Second)
-		resp, err = client.Do(req)
+		resp, err = doRequest()
 		if err != nil {
 			return fmt.Errorf("post (after retry): %w", err)
 		}
 	}
 	defer resp.Body.Close()
 
+	respBody, _ := io.ReadAll(resp.Body)
+	fmt.Printf("[test-history] response  status=%d  body=%s\n", resp.StatusCode, string(respBody))
+
 	if resp.StatusCode >= 300 {
-		return fmt.Errorf("API returned %d", resp.StatusCode)
+		return fmt.Errorf("API returned %d: %s", resp.StatusCode, string(respBody))
 	}
 	return nil
 }

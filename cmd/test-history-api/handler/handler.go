@@ -65,6 +65,7 @@ func (h *handlers) ingest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if len(body.Events) == 0 {
+		log.Printf("ingest: rejected — events array is empty")
 		writeError(w, http.StatusBadRequest, "VALIDATION_ERROR", "events array is empty")
 		return
 	}
@@ -72,9 +73,14 @@ func (h *handlers) ingest(w http.ResponseWriter, r *http.Request) {
 	applyDefaults(body.Events)
 
 	if err := validateAttempts(body.Events); err != nil {
+		log.Printf("ingest: validation error — %v", err)
 		writeError(w, http.StatusBadRequest, "VALIDATION_ERROR", err.Error())
 		return
 	}
+
+	first := body.Events[0]
+	log.Printf("ingest: %d events  repo=%s  suite=%s  framework=%s  env=%s  run_id=%s",
+		len(body.Events), first.Repo, first.Suite, first.Framework, first.Env, first.RunID)
 
 	ctx, cancel := context.WithTimeout(r.Context(), 20*time.Second)
 	defer cancel()
@@ -86,6 +92,7 @@ func (h *handlers) ingest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("ingest: accepted %d events", len(body.Events))
 	w.WriteHeader(http.StatusAccepted)
 	writeJSON(w, map[string]any{"accepted": len(body.Events)})
 }
