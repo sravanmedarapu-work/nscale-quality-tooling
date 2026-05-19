@@ -4,46 +4,16 @@ import (
 	"os"
 	"testing"
 
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/event"
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/parser/playwright"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
-func TestParse_fixture(t *testing.T) {
-	f, err := os.Open("../../../testdata/fixtures/playwright-results.json")
-	require.NoError(t, err)
-	defer f.Close()
-
-	results, err := playwright.Parse(f)
-	require.NoError(t, err)
-
-	// fixture has 3 specs: 1 passed, 1 failed+retry (2 results), 1 skipped = 4 total results
-	require.Len(t, results, 4)
-
-	passed := results[0]
-	assert.Equal(t, event.StatusPassed, passed.Status)
-	assert.Equal(t, "tests/network/vpc.spec.ts::create and delete VPC", passed.TestID)
-	assert.Equal(t, 4200, passed.DurationMS)
-	assert.Equal(t, 0, passed.AttemptIndex)
-
-	failedFirst := results[1]
-	assert.Equal(t, event.StatusFailed, failedFirst.Status)
-	assert.Equal(t, 0, failedFirst.AttemptIndex)
-	assert.Contains(t, failedFirst.FailureMessage, "Timeout")
-
-	failedRetry := results[2]
-	assert.Equal(t, event.StatusPassed, failedRetry.Status) // passed on retry
-	assert.Equal(t, 1, failedRetry.AttemptIndex)
-
-	skipped := results[3]
-	assert.Equal(t, event.StatusSkipped, skipped.Status)
-}
-
-func TestParse_empty_suites(t *testing.T) {
-	results, err := playwright.Parse(stringReader(`{"suites":[]}`))
-	require.NoError(t, err)
-	assert.Empty(t, results)
+func TestPlaywrightParser(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Playwright Parser Suite")
 }
 
 func stringReader(s string) *os.File {
@@ -52,3 +22,50 @@ func stringReader(s string) *os.File {
 	f.Seek(0, 0)
 	return f
 }
+
+var _ = Describe("playwright.Parse", func() {
+	Describe("fixture file", func() {
+		var f *os.File
+
+		BeforeEach(func() {
+			var err error
+			f, err = os.Open("../../../testdata/fixtures/playwright-results.json")
+			Expect(err).NotTo(HaveOccurred())
+			DeferCleanup(f.Close)
+		})
+
+		It("parses 4 results with correct fields", func() {
+			results, err := playwright.Parse(f)
+			Expect(err).NotTo(HaveOccurred())
+
+			// fixture has 3 specs: 1 passed, 1 failed+retry (2 results), 1 skipped = 4 total results
+			Expect(results).To(HaveLen(4))
+
+			passed := results[0]
+			Expect(passed.Status).To(Equal(event.StatusPassed))
+			Expect(passed.TestID).To(Equal("tests/network/vpc.spec.ts::create and delete VPC"))
+			Expect(passed.DurationMS).To(Equal(4200))
+			Expect(passed.AttemptIndex).To(Equal(0))
+
+			failedFirst := results[1]
+			Expect(failedFirst.Status).To(Equal(event.StatusFailed))
+			Expect(failedFirst.AttemptIndex).To(Equal(0))
+			Expect(failedFirst.FailureMessage).To(ContainSubstring("Timeout"))
+
+			failedRetry := results[2]
+			Expect(failedRetry.Status).To(Equal(event.StatusPassed)) // passed on retry
+			Expect(failedRetry.AttemptIndex).To(Equal(1))
+
+			skipped := results[3]
+			Expect(skipped.Status).To(Equal(event.StatusSkipped))
+		})
+	})
+
+	Describe("empty suites", func() {
+		It("returns empty results", func() {
+			results, err := playwright.Parse(stringReader(`{"suites":[]}`))
+			Expect(err).NotTo(HaveOccurred())
+			Expect(results).To(BeEmpty())
+		})
+	})
+})

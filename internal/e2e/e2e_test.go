@@ -27,9 +27,10 @@ import (
 	"testing"
 	"time"
 
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+
 	_ "github.com/lib/pq"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
 
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/cmd/nscale-test-history/ingest"
@@ -38,12 +39,17 @@ import (
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/store"
 )
 
+func TestE2ESuite(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "E2E Suite")
+}
+
 const (
 	e2eSecret = "e2e-secret"
 	e2eRepo   = "org/e2e-repo"
 )
 
-// srvURL and e2eToken are set in TestMain. All helpers and tests use these
+// srvURL and e2eToken are set in BeforeSuite. All helpers and tests use these
 // variables so they work in both black-box (real binary) and in-process modes.
 var (
 	srvURL      string
@@ -89,9 +95,13 @@ type trendsResponse struct {
 	Buckets []trendBucket `json:"buckets"`
 }
 
-// ---- TestMain ----------------------------------------------------------------
+// ---- BeforeSuite / AfterSuite -----------------------------------------------
 
-func TestMain(m *testing.M) {
+var stopSrv func()
+var stopDB func()
+var e2eSt *store.Store
+
+var _ = BeforeSuite(func() {
 	_, filename, _, _ := runtime.Caller(0)
 	moduleRoot = filepath.Join(filepath.Dir(filename), "..", "..")
 	fixturesDir = filepath.Join(moduleRoot, "testdata", "fixtures")
@@ -104,50 +114,45 @@ func TestMain(m *testing.M) {
 		if e2eToken == "" {
 			e2eToken = e2eSecret
 		}
-		os.Exit(m.Run())
+		return
 	}
 
 	// In-process mode: spin up postgres (testcontainers) + httptest.Server.
 	ctx := context.Background()
 
 	dbURL := os.Getenv("DATABASE_URL")
-	var stopDB func()
 
 	if dbURL == "" {
 		var err error
 		dbURL, stopDB, err = startPostgres(ctx)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "e2e: start postgres:", err)
-			os.Exit(1)
-		}
+		Expect(err).NotTo(HaveOccurred(), "e2e: start postgres")
 	} else {
 		stopDB = func() {}
 	}
 
-	if err := applyMigration(dbURL, filepath.Join(moduleRoot, "migrations", "001_initial_schema.sql")); err != nil {
-		fmt.Fprintln(os.Stderr, "e2e: migrate:", err)
-		stopDB()
-		os.Exit(1)
-	}
+	err := applyMigration(dbURL, filepath.Join(moduleRoot, "migrations", "001_initial_schema.sql"))
+	Expect(err).NotTo(HaveOccurred(), "e2e: migrate")
 
-	st, err := store.New(dbURL)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "e2e: store:", err)
-		stopDB()
-		os.Exit(1)
-	}
+	e2eSt, err = store.New(dbURL)
+	Expect(err).NotTo(HaveOccurred(), "e2e: store")
 
 	e2eToken = e2eSecret
-	srv := httptest.NewServer(handler.New(st, e2eToken))
+	srv := httptest.NewServer(handler.New(e2eSt, e2eToken))
 	srvURL = srv.URL
+	stopSrv = srv.Close
+})
 
-	code := m.Run()
-
-	srv.Close()
-	st.Close()
-	stopDB()
-	os.Exit(code)
-}
+var _ = AfterSuite(func() {
+	if stopSrv != nil {
+		stopSrv()
+	}
+	if e2eSt != nil {
+		e2eSt.Close()
+	}
+	if stopDB != nil {
+		stopDB()
+	}
+})
 
 func startPostgres(ctx context.Context) (dsn string, stop func(), err error) {
 	c, err := tcpostgres.Run(ctx,
@@ -184,16 +189,15 @@ func applyMigration(dbURL, path string) error {
 
 // ---- helpers ----------------------------------------------------------------
 
-// suiteName returns a unique, DB-safe suite name per test to prevent cross-test
+// suiteName returns a unique, DB-safe suite name per spec to prevent cross-test
 // contamination in the shared Postgres instance.
-func suiteName(t *testing.T) string {
-	t.Helper()
+func suiteName() string {
 	return strings.Map(func(r rune) rune {
 		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') {
 			return r
 		}
 		return '-'
-	}, t.Name())
+	}, CurrentSpecReport().FullText())
 }
 
 // runID returns a unique run ID for each call (nanosecond timestamp).
@@ -203,17 +207,20 @@ func runID() string {
 
 // ingestFixture calls ingest.Run with the provided fixture files, wiring in the
 // shared test server. It changes to a temp dir to isolate spool files.
-func ingestFixture(t *testing.T, suite, framework, env, jsonPath, junitPath string) {
-	t.Helper()
-	t.Chdir(t.TempDir())
+func ingestFixture(suite, framework, env, jsonPath, junitPath string) {
+	dir := GinkgoT().TempDir()
+	oldDir, err := os.Getwd()
+	Expect(err).NotTo(HaveOccurred())
+	DeferCleanup(os.Chdir, oldDir)
+	Expect(os.Chdir(dir)).To(Succeed())
 
-	t.Setenv("GITHUB_REPOSITORY", e2eRepo)
-	t.Setenv("GITHUB_RUN_ID", runID())
-	t.Setenv("GITHUB_RUN_ATTEMPT", "1")
-	t.Setenv("GITHUB_REF_NAME", "main")
-	t.Setenv("GITHUB_SHA", "e2esha")
-	t.Setenv("TEST_HISTORY_API_URL", srvURL)
-	t.Setenv("TEST_HISTORY_TOKEN", e2eToken)
+	GinkgoT().Setenv("GITHUB_REPOSITORY", e2eRepo)
+	GinkgoT().Setenv("GITHUB_RUN_ID", runID())
+	GinkgoT().Setenv("GITHUB_RUN_ATTEMPT", "1")
+	GinkgoT().Setenv("GITHUB_REF_NAME", "main")
+	GinkgoT().Setenv("GITHUB_SHA", "e2esha")
+	GinkgoT().Setenv("TEST_HISTORY_API_URL", srvURL)
+	GinkgoT().Setenv("TEST_HISTORY_TOKEN", e2eToken)
 
 	args := []string{"--suite", suite, "--framework", framework, "--env", env}
 	if jsonPath != "" {
@@ -225,37 +232,34 @@ func ingestFixture(t *testing.T, suite, framework, env, jsonPath, junitPath stri
 	ingest.Run(args)
 }
 
-func doGet(t *testing.T, path string) *http.Response {
-	t.Helper()
+func doGet(path string) *http.Response {
 	req, err := http.NewRequest(http.MethodGet, srvURL+path, nil)
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 	req.Header.Set("Authorization", "Bearer "+e2eToken)
 	resp, err := http.DefaultClient.Do(req)
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 	return resp
 }
 
-func doGetNoAuth(t *testing.T, path string) *http.Response {
-	t.Helper()
+func doGetNoAuth(path string) *http.Response {
 	req, err := http.NewRequest(http.MethodGet, srvURL+path, nil)
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 	resp, err := http.DefaultClient.Do(req)
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 	return resp
 }
 
-func doPost(t *testing.T, path string, body any, token string) *http.Response {
-	t.Helper()
+func doPost(path string, body any, token string) *http.Response {
 	b, err := json.Marshal(body)
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 	req, err := http.NewRequest(http.MethodPost, srvURL+path, strings.NewReader(string(b)))
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 	req.Header.Set("Content-Type", "application/json")
 	if token != "" {
 		req.Header.Set("Authorization", "Bearer "+token)
 	}
 	resp, err := http.DefaultClient.Do(req)
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 	return resp
 }
 
@@ -272,19 +276,17 @@ func trendsURL(repo, suite, env, window string) string {
 	}.Encode()
 }
 
-func decodeHistory(t *testing.T, resp *http.Response) historySummary {
-	t.Helper()
+func decodeHistory(resp *http.Response) historySummary {
 	defer resp.Body.Close()
 	var hs historySummary
-	require.NoError(t, json.NewDecoder(resp.Body).Decode(&hs))
+	Expect(json.NewDecoder(resp.Body).Decode(&hs)).To(Succeed())
 	return hs
 }
 
-func decodeTrends(t *testing.T, resp *http.Response) trendsResponse {
-	t.Helper()
+func decodeTrends(resp *http.Response) trendsResponse {
 	defer resp.Body.Close()
 	var tr trendsResponse
-	require.NoError(t, json.NewDecoder(resp.Body).Decode(&tr))
+	Expect(json.NewDecoder(resp.Body).Decode(&tr)).To(Succeed())
 	return tr
 }
 
@@ -300,388 +302,395 @@ func totalAttempts(tr trendsResponse) int {
 // API contract tests
 // ============================================================================
 
-func TestHealthz_DBUp(t *testing.T) {
-	resp := doGet(t, "/healthz")
-	defer resp.Body.Close()
-	require.Equal(t, http.StatusOK, resp.StatusCode)
+var _ = Describe("API contract", func() {
+	Describe("GET /healthz", func() {
+		It("returns 200 with status ok and db ok when DB is up", func() {
+			resp := doGet("/healthz")
+			defer resp.Body.Close()
+			Expect(resp.StatusCode).To(Equal(http.StatusOK))
 
-	var body map[string]string
-	require.NoError(t, json.NewDecoder(resp.Body).Decode(&body))
-	assert.Equal(t, "ok", body["status"])
-	assert.Equal(t, "ok", body["db"])
-}
+			var body map[string]string
+			Expect(json.NewDecoder(resp.Body).Decode(&body)).To(Succeed())
+			Expect(body["status"]).To(Equal("ok"))
+			Expect(body["db"]).To(Equal("ok"))
+		})
+	})
 
-func TestAuth_NoToken_AllEndpoints(t *testing.T) {
-	paths := []struct {
-		method string
-		path   string
-	}{
-		{"POST", "/v1/runs/ingest"},
-		{"GET", "/v1/tests/history?repo=r&suite=s&env=e&test_id=t"},
-		{"GET", "/v1/tests/trends?repo=r&suite=s&env=e"},
-	}
-	for _, tc := range paths {
-		tc := tc
-		t.Run(tc.method+" "+tc.path, func(t *testing.T) {
-			var resp *http.Response
-			if tc.method == "POST" {
-				resp = doPost(t, tc.path, map[string]any{"events": []any{}}, "")
-			} else {
-				resp = doGetNoAuth(t, tc.path)
+	Describe("Authentication", func() {
+		Context("no token on all endpoints", func() {
+			type endpointCase struct {
+				method string
+				path   string
 			}
-			defer resp.Body.Close()
-			assert.Equal(t, http.StatusUnauthorized, resp.StatusCode)
-		})
-	}
-}
-
-func TestAuth_WrongToken(t *testing.T) {
-	resp := doPost(t, "/v1/runs/ingest", map[string]any{"events": []any{}}, "bad-token")
-	defer resp.Body.Close()
-	assert.Equal(t, http.StatusUnauthorized, resp.StatusCode)
-}
-
-func TestIngest_EmptyEventsArray(t *testing.T) {
-	resp := doPost(t, "/v1/runs/ingest", map[string]any{"events": []any{}}, e2eToken)
-	defer resp.Body.Close()
-	assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
-}
-
-func TestIngest_MissingEventID(t *testing.T) {
-	resp := doPost(t, "/v1/runs/ingest", map[string]any{
-		"events": []any{map[string]any{
-			// event_id deliberately omitted
-			"repo": e2eRepo, "suite": "s", "framework": "ginkgo",
-			"env": "dev", "run_id": "1", "run_attempt": 1,
-			"test_id": "t::test", "status": "passed",
-			"started_at": time.Now(),
-		}},
-	}, e2eToken)
-	defer resp.Body.Close()
-	require.Equal(t, http.StatusBadRequest, resp.StatusCode)
-	var body map[string]string
-	require.NoError(t, json.NewDecoder(resp.Body).Decode(&body))
-	assert.Contains(t, body["error"], "event_id")
-}
-
-func TestIngest_MissingRequiredFields(t *testing.T) {
-	// Only identity/analytics fields are required. Metadata fields (framework, env,
-	// started_at, run_attempt) are silently defaulted so data is never lost.
-	required := []string{"event_id", "repo", "suite", "run_id", "test_id", "status"}
-	for _, field := range required {
-		field := field
-		t.Run("missing_"+field, func(t *testing.T) {
-			evt := map[string]any{
-				"event_id":    "eid-" + field,
-				"repo":        e2eRepo,
-				"suite":       "s",
-				"framework":   "ginkgo",
-				"env":         "dev",
-				"run_id":      "1",
-				"run_attempt": 1,
-				"test_id":     "t::test",
-				"status":      "passed",
-				"started_at":  time.Now(),
+			endpoints := []endpointCase{
+				{"POST", "/v1/runs/ingest"},
+				{"GET", "/v1/tests/history?repo=r&suite=s&env=e&test_id=t"},
+				{"GET", "/v1/tests/trends?repo=r&suite=s&env=e"},
 			}
-			delete(evt, field)
-			resp := doPost(t, "/v1/runs/ingest", map[string]any{"events": []any{evt}}, e2eToken)
-			defer resp.Body.Close()
-			assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+			for _, tc := range endpoints {
+				tc := tc
+				It("returns 401 for "+tc.method+" "+tc.path, func() {
+					var resp *http.Response
+					if tc.method == "POST" {
+						resp = doPost(tc.path, map[string]any{"events": []any{}}, "")
+					} else {
+						resp = doGetNoAuth(tc.path)
+					}
+					defer resp.Body.Close()
+					Expect(resp.StatusCode).To(Equal(http.StatusUnauthorized))
+				})
+			}
 		})
-	}
-}
 
-// TestIngest_DefaultsApplied verifies that events missing optional metadata fields
-// (framework, env, run_attempt, started_at) are still accepted and stored — no data lost.
-func TestIngest_DefaultsApplied(t *testing.T) {
-	suite := suiteName(t)
-	rid := runID()
-	now := time.Now().UTC().Truncate(time.Millisecond)
-
-	// Minimal event: only the 6 required identity/analytics fields.
-	batch := []map[string]any{
-		{
-			"event_id":  event.NewEventID(e2eRepo, rid, 1, "pkg::TestDefaulted", 0),
-			"repo":      e2eRepo,
-			"suite":     suite,
-			"run_id":    rid,
-			"test_id":   "pkg::TestDefaulted",
-			"status":    "passed",
-			"started_at": now,
-			// framework, env, run_attempt intentionally omitted
-		},
-	}
-
-	resp := doPost(t, "/v1/runs/ingest", map[string]any{"events": batch}, e2eToken)
-	defer resp.Body.Close()
-	require.Equal(t, http.StatusAccepted, resp.StatusCode)
-
-	// The event should be queryable via trends using the defaulted env="unknown".
-	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "unknown", "30d")))
-	assert.Equal(t, 1, totalAttempts(tr), "event stored under env=unknown default")
-}
-
-func TestHistory_MissingParams(t *testing.T) {
-	cases := []string{
-		"/v1/tests/history",
-		"/v1/tests/history?repo=r",
-		"/v1/tests/history?repo=r&suite=s",
-		"/v1/tests/history?repo=r&suite=s&env=e",
-	}
-	for _, path := range cases {
-		path := path
-		t.Run(path, func(t *testing.T) {
-			resp := doGet(t, path)
+		It("returns 401 for wrong token on POST /v1/runs/ingest", func() {
+			resp := doPost("/v1/runs/ingest", map[string]any{"events": []any{}}, "bad-token")
 			defer resp.Body.Close()
-			assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+			Expect(resp.StatusCode).To(Equal(http.StatusUnauthorized))
 		})
-	}
-}
+	})
 
-func TestTrends_MissingParams(t *testing.T) {
-	cases := []string{
-		"/v1/tests/trends",
-		"/v1/tests/trends?repo=r",
-		"/v1/tests/trends?repo=r&suite=s",
-	}
-	for _, path := range cases {
-		path := path
-		t.Run(path, func(t *testing.T) {
-			resp := doGet(t, path)
+	Describe("POST /v1/runs/ingest", func() {
+		It("returns 400 for an empty events array", func() {
+			resp := doPost("/v1/runs/ingest", map[string]any{"events": []any{}}, e2eToken)
 			defer resp.Body.Close()
-			assert.Equal(t, http.StatusBadRequest, resp.StatusCode)
+			Expect(resp.StatusCode).To(Equal(http.StatusBadRequest))
 		})
-	}
-}
+
+		It("returns 400 and names event_id in the error when event_id is missing", func() {
+			resp := doPost("/v1/runs/ingest", map[string]any{
+				"events": []any{map[string]any{
+					// event_id deliberately omitted
+					"repo": e2eRepo, "suite": "s", "framework": "ginkgo",
+					"env": "dev", "run_id": "1", "run_attempt": 1,
+					"test_id": "t::test", "status": "passed",
+					"started_at": time.Now(),
+				}},
+			}, e2eToken)
+			defer resp.Body.Close()
+			Expect(resp.StatusCode).To(Equal(http.StatusBadRequest))
+			var body map[string]string
+			Expect(json.NewDecoder(resp.Body).Decode(&body)).To(Succeed())
+			Expect(body["error"]).To(ContainSubstring("event_id"))
+		})
+
+		Describe("missing required fields", func() {
+			// Only identity/analytics fields are required. Metadata fields (framework, env,
+			// started_at, run_attempt) are silently defaulted so data is never lost.
+			required := []string{"event_id", "repo", "suite", "run_id", "test_id", "status"}
+			for _, field := range required {
+				field := field
+				It("returns 400 when "+field+" is missing", func() {
+					evt := map[string]any{
+						"event_id":    "eid-" + field,
+						"repo":        e2eRepo,
+						"suite":       "s",
+						"framework":   "ginkgo",
+						"env":         "dev",
+						"run_id":      "1",
+						"run_attempt": 1,
+						"test_id":     "t::test",
+						"status":      "passed",
+						"started_at":  time.Now(),
+					}
+					delete(evt, field)
+					resp := doPost("/v1/runs/ingest", map[string]any{"events": []any{evt}}, e2eToken)
+					defer resp.Body.Close()
+					Expect(resp.StatusCode).To(Equal(http.StatusBadRequest))
+				})
+			}
+		})
+
+		It("accepts events missing optional metadata fields and stores them with defaults", func() {
+			suite := suiteName()
+			rid := runID()
+			now := time.Now().UTC().Truncate(time.Millisecond)
+
+			batch := []map[string]any{
+				{
+					"event_id":   event.NewEventID(e2eRepo, rid, 1, "pkg::TestDefaulted", 0),
+					"repo":       e2eRepo,
+					"suite":      suite,
+					"run_id":     rid,
+					"test_id":    "pkg::TestDefaulted",
+					"status":     "passed",
+					"started_at": now,
+					// framework, env, run_attempt intentionally omitted
+				},
+			}
+
+			resp := doPost("/v1/runs/ingest", map[string]any{"events": batch}, e2eToken)
+			defer resp.Body.Close()
+			Expect(resp.StatusCode).To(Equal(http.StatusAccepted))
+
+			// The event should be queryable via trends using the defaulted env="unknown".
+			tr := decodeTrends(doGet(trendsURL(e2eRepo, suite, "unknown", "30d")))
+			Expect(totalAttempts(tr)).To(Equal(1), "event stored under env=unknown default")
+		})
+	})
+
+	Describe("GET /v1/tests/history", func() {
+		Context("missing required params", func() {
+			paths := []string{
+				"/v1/tests/history",
+				"/v1/tests/history?repo=r",
+				"/v1/tests/history?repo=r&suite=s",
+				"/v1/tests/history?repo=r&suite=s&env=e",
+			}
+			for _, path := range paths {
+				path := path
+				It("returns 400 for "+path, func() {
+					resp := doGet(path)
+					defer resp.Body.Close()
+					Expect(resp.StatusCode).To(Equal(http.StatusBadRequest))
+				})
+			}
+		})
+	})
+
+	Describe("GET /v1/tests/trends", func() {
+		Context("missing required params", func() {
+			paths := []string{
+				"/v1/tests/trends",
+				"/v1/tests/trends?repo=r",
+				"/v1/tests/trends?repo=r&suite=s",
+			}
+			for _, path := range paths {
+				path := path
+				It("returns 400 for "+path, func() {
+					resp := doGet(path)
+					defer resp.Body.Close()
+					Expect(resp.StatusCode).To(Equal(http.StatusBadRequest))
+				})
+			}
+		})
+	})
+})
 
 // ============================================================================
 // Lifecycle tests: parse → ingest → store → query
 // ============================================================================
 
-// TestLifecycle_Playwright ingests the small Playwright fixture and verifies
-// both per-test history (including retry counts) and suite-level trends.
-func TestLifecycle_Playwright(t *testing.T) {
-	suite := suiteName(t)
+var _ = Describe("Lifecycle", func() {
+	Describe("Playwright fixture", func() {
+		It("ingests 4 attempts and returns correct history and trends", func() {
+			suite := suiteName()
 
-	ingestFixture(t, suite, "playwright", "e2e",
-		filepath.Join(fixturesDir, "playwright-results.json"), "")
+			ingestFixture(suite, "playwright", "e2e",
+				filepath.Join(fixturesDir, "playwright-results.json"), "")
 
-	// "create VPC fails on timeout" has 2 results: 1 failed (attempt 0) + 1 passed (attempt 1)
-	hs := decodeHistory(t, doGet(t,
-		historyURL(e2eRepo, suite, "e2e",
-			"tests/network/vpc.spec.ts::create VPC fails on timeout", "30d")))
-	assert.Equal(t, 2, hs.Attempts, "both attempts stored")
-	assert.Equal(t, 1, hs.Failed)
-	assert.Equal(t, 1, hs.Passed)
-	assert.InDelta(t, 50.0, hs.FailureRate, 0.1)
-	assert.NotNil(t, hs.LastFailedAt)
-	assert.NotNil(t, hs.LastPassedAt)
+			// "create VPC fails on timeout" has 2 results: 1 failed (attempt 0) + 1 passed (attempt 1)
+			hs := decodeHistory(doGet(historyURL(e2eRepo, suite, "e2e",
+				"tests/network/vpc.spec.ts::create VPC fails on timeout", "30d")))
+			Expect(hs.Attempts).To(Equal(2), "both attempts stored")
+			Expect(hs.Failed).To(Equal(1))
+			Expect(hs.Passed).To(Equal(1))
+			Expect(hs.FailureRate).To(BeNumerically("~", 50.0, 0.1))
+			Expect(hs.LastFailedAt).NotTo(BeNil())
+			Expect(hs.LastPassedAt).NotTo(BeNil())
 
-	// Failure reason and commit SHA are surfaced in the summary.
-	require.NotNil(t, hs.LastFailureExcerpt, "failure message must be captured")
-	assert.Contains(t, *hs.LastFailureExcerpt, "Timeout")
-	require.NotNil(t, hs.LastCommitSHA, "commit SHA must be stored and returned")
-	assert.Equal(t, "e2esha", *hs.LastCommitSHA)
+			// Failure reason and commit SHA are surfaced in the summary.
+			Expect(hs.LastFailureExcerpt).NotTo(BeNil(), "failure message must be captured")
+			Expect(*hs.LastFailureExcerpt).To(ContainSubstring("Timeout"))
+			Expect(hs.LastCommitSHA).NotTo(BeNil(), "commit SHA must be stored and returned")
+			Expect(*hs.LastCommitSHA).To(Equal("e2esha"))
 
-	// "create and delete VPC" — 1 passed, no failures
-	hs2 := decodeHistory(t, doGet(t,
-		historyURL(e2eRepo, suite, "e2e",
-			"tests/network/vpc.spec.ts::create and delete VPC", "30d")))
-	assert.Equal(t, 1, hs2.Attempts)
-	assert.Equal(t, 1, hs2.Passed)
-	assert.Equal(t, 0, hs2.Failed)
-	assert.InDelta(t, 0.0, hs2.FailureRate, 0.01)
+			// "create and delete VPC" — 1 passed, no failures
+			hs2 := decodeHistory(doGet(historyURL(e2eRepo, suite, "e2e",
+				"tests/network/vpc.spec.ts::create and delete VPC", "30d")))
+			Expect(hs2.Attempts).To(Equal(1))
+			Expect(hs2.Passed).To(Equal(1))
+			Expect(hs2.Failed).To(Equal(0))
+			Expect(hs2.FailureRate).To(BeNumerically("~", 0.0, 0.01))
 
-	// Trends should reflect all 4 attempts (1 create, 2 timeout, 1 skipped)
-	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "e2e", "30d")))
-	require.NotEmpty(t, tr.Buckets)
-	assert.Equal(t, 4, totalAttempts(tr))
-}
-
-// TestLifecycle_Ginkgo_UniComputeDev ingests the real uni-compute dev fixture
-// (43 specs: 42 passed, 1 failed) and verifies counts via trends.
-func TestLifecycle_Ginkgo_UniComputeDev(t *testing.T) {
-	suite := suiteName(t)
-
-	ingestFixture(t, suite, "ginkgo", "dev",
-		filepath.Join(fixturesDir, "uni-compute-dev", "ginkgo-results.json"), "")
-
-	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "dev", "30d")))
-	require.NotEmpty(t, tr.Buckets)
-	assert.Equal(t, 43, totalAttempts(tr))
-
-	var totalFailed int
-	for _, b := range tr.Buckets {
-		totalFailed += b.Failed
-	}
-	assert.Equal(t, 1, totalFailed)
-}
-
-// TestLifecycle_Ginkgo_UniComputeUAT ingests the UAT fixture (43 specs, 2 failed).
-func TestLifecycle_Ginkgo_UniComputeUAT(t *testing.T) {
-	suite := suiteName(t)
-
-	ingestFixture(t, suite, "ginkgo", "uat",
-		filepath.Join(fixturesDir, "uni-compute-uat", "ginkgo-results.json"), "")
-
-	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "uat", "30d")))
-	require.NotEmpty(t, tr.Buckets)
-	assert.Equal(t, 43, totalAttempts(tr))
-
-	var totalFailed int
-	for _, b := range tr.Buckets {
-		totalFailed += b.Failed
-	}
-	assert.Equal(t, 2, totalFailed)
-}
-
-// TestLifecycle_Ginkgo_UniRegion ingests the uni-region UAT fixture
-// (66 real specs: 12 passed, 54 skipped — focused run; BeforeSuite node excluded).
-func TestLifecycle_Ginkgo_UniRegion(t *testing.T) {
-	suite := suiteName(t)
-
-	ingestFixture(t, suite, "ginkgo", "uat",
-		filepath.Join(fixturesDir, "uni-region-uat", "ginkgo-results.json"), "")
-
-	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "uat", "30d")))
-	require.NotEmpty(t, tr.Buckets)
-	assert.Equal(t, 66, totalAttempts(tr))
-
-	var totalPassed int
-	for _, b := range tr.Buckets {
-		totalPassed += b.Passed
-	}
-	assert.Equal(t, 12, totalPassed)
-}
-
-// TestLifecycle_JUnit_Fallback verifies that the CLI falls back to JUnit XML
-// parsing when no JSON report is provided. Uses the Playwright JUnit fixture
-// under the "pytest" framework label.
-func TestLifecycle_JUnit_Fallback(t *testing.T) {
-	suite := suiteName(t)
-
-	ingestFixture(t, suite, "pytest", "dev",
-		"", filepath.Join(fixturesDir, "playwright-junit.xml"))
-
-	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "dev", "30d")))
-	require.NotEmpty(t, tr.Buckets)
-	assert.Equal(t, 3, totalAttempts(tr)) // junit fixture has 3 test cases
-}
-
-// TestLifecycle_JUnit_UniComputeDev ingests the real JUnit XML from uni-compute-dev.
-func TestLifecycle_JUnit_UniComputeDev(t *testing.T) {
-	suite := suiteName(t)
-
-	ingestFixture(t, suite, "ginkgo", "dev",
-		"", filepath.Join(fixturesDir, "uni-compute-dev", "junit.xml"))
-
-	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "dev", "30d")))
-	require.NotEmpty(t, tr.Buckets)
-	assert.Equal(t, 43, totalAttempts(tr))
-}
-
-// TestIdempotency verifies that ingesting the same batch twice does not
-// create duplicate rows (ON CONFLICT DO NOTHING behaviour).
-func TestIdempotency(t *testing.T) {
-	suite := suiteName(t)
-	rid := runID()
-	now := time.Now().UTC().Truncate(time.Millisecond)
-
-	batch := []event.TestAttempt{
-		{
-			EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestAlpha", 0),
-			Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
-			RunID: rid, RunAttempt: 1,
-			TestID: "pkg::TestAlpha", Status: "passed", DurationMS: 120, StartedAt: now,
-		},
-		{
-			EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestBeta", 0),
-			Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
-			RunID: rid, RunAttempt: 1,
-			TestID: "pkg::TestBeta", Status: "failed", DurationMS: 880, StartedAt: now,
-		},
-		{
-			EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestGamma", 0),
-			Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
-			RunID: rid, RunAttempt: 1,
-			TestID: "pkg::TestGamma", Status: "skipped", DurationMS: 0, StartedAt: now,
-		},
-	}
-
-	body := map[string]any{"events": batch}
-
-	resp1 := doPost(t, "/v1/runs/ingest", body, e2eToken)
-	defer resp1.Body.Close()
-	require.Equal(t, http.StatusAccepted, resp1.StatusCode)
-
-	// Ingest the exact same batch again — must not error.
-	resp2 := doPost(t, "/v1/runs/ingest", body, e2eToken)
-	defer resp2.Body.Close()
-	require.Equal(t, http.StatusAccepted, resp2.StatusCode)
-
-	// Verify via the API that duplicates were silently dropped:
-	// each test must appear exactly once in history regardless of how many
-	// times we ingested.
-	for _, tc := range []struct {
-		testID string
-		status string
-	}{
-		{"pkg::TestAlpha", "passed"},
-		{"pkg::TestBeta", "failed"},
-		{"pkg::TestGamma", "skipped"},
-	} {
-		hs := decodeHistory(t, doGet(t, historyURL(e2eRepo, suite, "e2e", tc.testID, "30d")))
-		assert.Equal(t, 1, hs.Attempts, "%s: double-ingest must not create duplicate rows", tc.testID)
-	}
-
-	// Trends for the suite must also show 3 total attempts (not 6).
-	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "e2e", "30d")))
-	assert.Equal(t, len(batch), totalAttempts(tr), "suite total must equal original batch size")
-}
-
-// TestWindowFiltering verifies that the 7d/30d/90d window parameters
-// correctly limit what history and trends queries return.
-func TestWindowFiltering(t *testing.T) {
-	suite := suiteName(t)
-	rid := runID()
-	now := time.Now().UTC().Truncate(time.Millisecond)
-
-	// Insert one recent attempt (should appear in all windows)
-	batch := []event.TestAttempt{{
-		EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestWindow", 0),
-		Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
-		RunID: rid, RunAttempt: 1,
-		TestID: "pkg::TestWindow", Status: "passed", DurationMS: 50, StartedAt: now,
-	}}
-	resp := doPost(t, "/v1/runs/ingest", map[string]any{"events": batch}, e2eToken)
-	defer resp.Body.Close()
-	require.Equal(t, http.StatusAccepted, resp.StatusCode)
-
-	for _, window := range []string{"7d", "30d", "90d"} {
-		window := window
-		t.Run(window, func(t *testing.T) {
-			hs := decodeHistory(t, doGet(t,
-				historyURL(e2eRepo, suite, "e2e", "pkg::TestWindow", window)))
-			assert.Equal(t, 1, hs.Attempts)
+			// Trends should reflect all 4 attempts (1 create, 2 timeout, 1 skipped)
+			tr := decodeTrends(doGet(trendsURL(e2eRepo, suite, "e2e", "30d")))
+			Expect(tr.Buckets).NotTo(BeEmpty())
+			Expect(totalAttempts(tr)).To(Equal(4))
 		})
-	}
-}
+	})
 
-// TestHistory_EmptyResult verifies that querying for a test that has no data
-// returns a valid zero-value summary (not an error).
-func TestHistory_EmptyResult(t *testing.T) {
-	resp := doGet(t, historyURL(e2eRepo, "nonexistent-suite", "e2e", "no::such::test", "30d"))
-	require.Equal(t, http.StatusOK, resp.StatusCode)
-	hs := decodeHistory(t, resp) // decodeHistory closes the body
-	assert.Equal(t, 0, hs.Attempts)
-}
+	Describe("Ginkgo uni-compute-dev fixture", func() {
+		It("ingests 43 attempts (42 passed, 1 failed)", func() {
+			suite := suiteName()
 
-// TestTrends_EmptyResult verifies that querying trends for a suite with no data
-// returns an empty buckets array (not an error).
-func TestTrends_EmptyResult(t *testing.T) {
-	resp := doGet(t, trendsURL(e2eRepo, "nonexistent-suite", "e2e", "30d"))
-	defer resp.Body.Close()
-	require.Equal(t, http.StatusOK, resp.StatusCode)
-	tr := decodeTrends(t, resp)
-	assert.Empty(t, tr.Buckets)
-}
+			ingestFixture(suite, "ginkgo", "dev",
+				filepath.Join(fixturesDir, "uni-compute-dev", "ginkgo-results.json"), "")
+
+			tr := decodeTrends(doGet(trendsURL(e2eRepo, suite, "dev", "30d")))
+			Expect(tr.Buckets).NotTo(BeEmpty())
+			Expect(totalAttempts(tr)).To(Equal(43))
+
+			var totalFailed int
+			for _, b := range tr.Buckets {
+				totalFailed += b.Failed
+			}
+			Expect(totalFailed).To(Equal(1))
+		})
+	})
+
+	Describe("Ginkgo uni-compute-uat fixture", func() {
+		It("ingests 43 attempts with 2 failed", func() {
+			suite := suiteName()
+
+			ingestFixture(suite, "ginkgo", "uat",
+				filepath.Join(fixturesDir, "uni-compute-uat", "ginkgo-results.json"), "")
+
+			tr := decodeTrends(doGet(trendsURL(e2eRepo, suite, "uat", "30d")))
+			Expect(tr.Buckets).NotTo(BeEmpty())
+			Expect(totalAttempts(tr)).To(Equal(43))
+
+			var totalFailed int
+			for _, b := range tr.Buckets {
+				totalFailed += b.Failed
+			}
+			Expect(totalFailed).To(Equal(2))
+		})
+	})
+
+	Describe("Ginkgo uni-region-uat fixture", func() {
+		It("ingests 66 attempts with 12 passed", func() {
+			suite := suiteName()
+
+			ingestFixture(suite, "ginkgo", "uat",
+				filepath.Join(fixturesDir, "uni-region-uat", "ginkgo-results.json"), "")
+
+			tr := decodeTrends(doGet(trendsURL(e2eRepo, suite, "uat", "30d")))
+			Expect(tr.Buckets).NotTo(BeEmpty())
+			Expect(totalAttempts(tr)).To(Equal(66))
+
+			var totalPassed int
+			for _, b := range tr.Buckets {
+				totalPassed += b.Passed
+			}
+			Expect(totalPassed).To(Equal(12))
+		})
+	})
+
+	Describe("JUnit fallback", func() {
+		It("parses playwright JUnit XML under pytest framework and stores 3 attempts", func() {
+			suite := suiteName()
+
+			ingestFixture(suite, "pytest", "dev",
+				"", filepath.Join(fixturesDir, "playwright-junit.xml"))
+
+			tr := decodeTrends(doGet(trendsURL(e2eRepo, suite, "dev", "30d")))
+			Expect(tr.Buckets).NotTo(BeEmpty())
+			Expect(totalAttempts(tr)).To(Equal(3))
+		})
+	})
+
+	Describe("JUnit uni-compute-dev fixture", func() {
+		It("ingests 43 attempts from JUnit XML", func() {
+			suite := suiteName()
+
+			ingestFixture(suite, "ginkgo", "dev",
+				"", filepath.Join(fixturesDir, "uni-compute-dev", "junit.xml"))
+
+			tr := decodeTrends(doGet(trendsURL(e2eRepo, suite, "dev", "30d")))
+			Expect(tr.Buckets).NotTo(BeEmpty())
+			Expect(totalAttempts(tr)).To(Equal(43))
+		})
+	})
+
+	Describe("Idempotency", func() {
+		It("does not create duplicate rows when the same batch is ingested twice", func() {
+			suite := suiteName()
+			rid := runID()
+			now := time.Now().UTC().Truncate(time.Millisecond)
+
+			batch := []event.TestAttempt{
+				{
+					EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestAlpha", 0),
+					Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
+					RunID: rid, RunAttempt: 1,
+					TestID: "pkg::TestAlpha", Status: "passed", DurationMS: 120, StartedAt: now,
+				},
+				{
+					EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestBeta", 0),
+					Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
+					RunID: rid, RunAttempt: 1,
+					TestID: "pkg::TestBeta", Status: "failed", DurationMS: 880, StartedAt: now,
+				},
+				{
+					EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestGamma", 0),
+					Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
+					RunID: rid, RunAttempt: 1,
+					TestID: "pkg::TestGamma", Status: "skipped", DurationMS: 0, StartedAt: now,
+				},
+			}
+
+			body := map[string]any{"events": batch}
+
+			resp1 := doPost("/v1/runs/ingest", body, e2eToken)
+			defer resp1.Body.Close()
+			Expect(resp1.StatusCode).To(Equal(http.StatusAccepted))
+
+			// Ingest the exact same batch again — must not error.
+			resp2 := doPost("/v1/runs/ingest", body, e2eToken)
+			defer resp2.Body.Close()
+			Expect(resp2.StatusCode).To(Equal(http.StatusAccepted))
+
+			// Verify via the API that duplicates were silently dropped.
+			for _, tc := range []struct {
+				testID string
+			}{
+				{"pkg::TestAlpha"},
+				{"pkg::TestBeta"},
+				{"pkg::TestGamma"},
+			} {
+				hs := decodeHistory(doGet(historyURL(e2eRepo, suite, "e2e", tc.testID, "30d")))
+				Expect(hs.Attempts).To(Equal(1), "%s: double-ingest must not create duplicate rows", tc.testID)
+			}
+
+			// Trends for the suite must also show 3 total attempts (not 6).
+			tr := decodeTrends(doGet(trendsURL(e2eRepo, suite, "e2e", "30d")))
+			Expect(totalAttempts(tr)).To(Equal(len(batch)), "suite total must equal original batch size")
+		})
+	})
+
+	Describe("Window filtering", func() {
+		It("returns the recent attempt in all windows (7d, 30d, 90d)", func() {
+			suite := suiteName()
+			rid := runID()
+			now := time.Now().UTC().Truncate(time.Millisecond)
+
+			batch := []event.TestAttempt{{
+				EventID: event.NewEventID(e2eRepo, rid, 1, "pkg::TestWindow", 0),
+				Repo: e2eRepo, Suite: suite, Framework: "ginkgo", Env: "e2e",
+				RunID: rid, RunAttempt: 1,
+				TestID: "pkg::TestWindow", Status: "passed", DurationMS: 50, StartedAt: now,
+			}}
+			resp := doPost("/v1/runs/ingest", map[string]any{"events": batch}, e2eToken)
+			defer resp.Body.Close()
+			Expect(resp.StatusCode).To(Equal(http.StatusAccepted))
+
+			for _, window := range []string{"7d", "30d", "90d"} {
+				window := window
+				Context(window, func() {
+					It("sees the attempt within "+window, func() {
+						hs := decodeHistory(doGet(
+							historyURL(e2eRepo, suite, "e2e", "pkg::TestWindow", window)))
+						Expect(hs.Attempts).To(Equal(1))
+					})
+				})
+			}
+		})
+	})
+
+	Describe("Empty results", func() {
+		It("returns a zero-value history summary for a nonexistent test", func() {
+			resp := doGet(historyURL(e2eRepo, "nonexistent-suite", "e2e", "no::such::test", "30d"))
+			Expect(resp.StatusCode).To(Equal(http.StatusOK))
+			hs := decodeHistory(resp)
+			Expect(hs.Attempts).To(Equal(0))
+		})
+
+		It("returns empty buckets for a suite with no data", func() {
+			resp := doGet(trendsURL(e2eRepo, "nonexistent-suite", "e2e", "30d"))
+			defer resp.Body.Close()
+			Expect(resp.StatusCode).To(Equal(http.StatusOK))
+			tr := decodeTrends(resp)
+			Expect(tr.Buckets).To(BeEmpty())
+		})
+	})
+})

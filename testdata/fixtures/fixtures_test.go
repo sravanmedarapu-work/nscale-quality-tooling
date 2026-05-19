@@ -6,58 +6,58 @@ import (
 	"os"
 	"testing"
 
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/parser/ginkgo"
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/parser/junit"
 )
+
+func TestFixtures(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Fixtures Suite")
+}
 
 type fixtureSet struct {
 	dir      string
 	minSpecs int
 }
 
-func testFixtureSet(t *testing.T, fs fixtureSet) {
-	t.Helper()
-	t.Run("ginkgo", func(t *testing.T) {
-		data, err := os.ReadFile(fmt.Sprintf("%s/ginkgo-results.json", fs.dir))
-		if err != nil {
-			t.Fatal(err)
-		}
-		results, err := ginkgo.Parse(bytes.NewReader(data))
-		if err != nil {
-			t.Fatal(err)
-		}
-		t.Logf("%s ginkgo: %d results", fs.dir, len(results))
-		if len(results) < fs.minSpecs {
-			t.Fatalf("expected >= %d results, got %d", fs.minSpecs, len(results))
-		}
+func testFixtureSet(fs fixtureSet) {
+	Context("ginkgo", func() {
+		It("has at least minSpecs results", func() {
+			data, err := os.ReadFile(fmt.Sprintf("%s/ginkgo-results.json", fs.dir))
+			Expect(err).NotTo(HaveOccurred())
+			results, err := ginkgo.Parse(bytes.NewReader(data))
+			Expect(err).NotTo(HaveOccurred())
+			GinkgoWriter.Printf("%s ginkgo: %d results\n", fs.dir, len(results))
+			Expect(len(results)).To(BeNumerically(">=", fs.minSpecs))
+		})
 	})
-	t.Run("junit", func(t *testing.T) {
-		data, err := os.ReadFile(fmt.Sprintf("%s/junit.xml", fs.dir))
-		if err != nil {
-			t.Fatal(err)
-		}
-		results, err := junit.Parse(bytes.NewReader(data))
-		if err != nil {
-			t.Fatal(err)
-		}
-		t.Logf("%s junit: %d results", fs.dir, len(results))
-		if len(results) < fs.minSpecs {
-			t.Fatalf("expected >= %d results, got %d", fs.minSpecs, len(results))
-		}
+
+	Context("junit", func() {
+		It("has at least minSpecs results", func() {
+			data, err := os.ReadFile(fmt.Sprintf("%s/junit.xml", fs.dir))
+			Expect(err).NotTo(HaveOccurred())
+			results, err := junit.Parse(bytes.NewReader(data))
+			Expect(err).NotTo(HaveOccurred())
+			GinkgoWriter.Printf("%s junit: %d results\n", fs.dir, len(results))
+			Expect(len(results)).To(BeNumerically(">=", fs.minSpecs))
+		})
 	})
 }
 
-func TestUniComputeFixtures(t *testing.T) {
+var _ = Describe("UniComputeFixtures", func() {
 	for _, env := range []string{"dev", "uat"} {
 		env := env
-		t.Run(env, func(t *testing.T) {
-			testFixtureSet(t, fixtureSet{dir: "uni-compute-" + env, minSpecs: 40})
+		Context(env, func() {
+			testFixtureSet(fixtureSet{dir: "uni-compute-" + env, minSpecs: 40})
 		})
 	}
-}
+})
 
-func TestUniRegionFixtures(t *testing.T) {
-	t.Run("uat", func(t *testing.T) {
-		testFixtureSet(t, fixtureSet{dir: "uni-region-uat", minSpecs: 13})
+var _ = Describe("UniRegionFixtures", func() {
+	Context("uat", func() {
+		testFixtureSet(fixtureSet{dir: "uni-region-uat", minSpecs: 13})
 	})
-}
+})

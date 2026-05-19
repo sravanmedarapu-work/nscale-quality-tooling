@@ -8,17 +8,20 @@ import (
 	"testing"
 	"time"
 
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/event"
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/store"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	tcpostgres "github.com/testcontainers/testcontainers-go/modules/postgres"
 )
 
-func setupDB(t *testing.T) (*store.Store, func()) {
-	t.Helper()
-	ctx := context.Background()
+func TestStoreSuite(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Store Integration Suite")
+}
 
+func setupDB(ctx context.Context) *store.Store {
 	pgc, err := tcpostgres.Run(ctx,
 		"postgres:16-alpine",
 		tcpostgres.WithDatabase("test_history"),
@@ -26,101 +29,109 @@ func setupDB(t *testing.T) (*store.Store, func()) {
 		tcpostgres.WithPassword("test_history"),
 		tcpostgres.BasicWaitStrategies(),
 	)
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 
 	dsn, err := pgc.ConnectionString(ctx, "sslmode=disable")
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 
 	s, err := store.New(dsn)
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 
 	migration, err := os.ReadFile("../../migrations/001_initial_schema.sql")
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 	_, err = s.DB().ExecContext(ctx, string(migration))
-	require.NoError(t, err)
+	Expect(err).NotTo(HaveOccurred())
 
-	return s, func() {
+	DeferCleanup(func() {
 		s.Close()
 		pgc.Terminate(ctx) //nolint:errcheck
-	}
+	})
+
+	return s
 }
 
-func TestUpsertAttempts_idempotent(t *testing.T) {
-	s, cleanup := setupDB(t)
-	defer cleanup()
-	ctx := context.Background()
+var _ = Describe("Store", func() {
+	var (
+		s   *store.Store
+		ctx context.Context
+	)
 
-	now := time.Now().UTC().Truncate(time.Millisecond)
-	attempts := []event.TestAttempt{
-		{
-			EventID: "evt-001", Repo: "org/repo", Suite: "s", Framework: "playwright",
-			Env: "dev", Branch: "main", RunID: "1", RunAttempt: 1,
-			TestID: "file::test1", Status: event.StatusPassed, DurationMS: 500, StartedAt: now,
-		},
-	}
+	BeforeEach(func() {
+		ctx = context.Background()
+		s = setupDB(ctx)
+	})
 
-	require.NoError(t, s.UpsertAttempts(ctx, attempts))
-	require.NoError(t, s.UpsertAttempts(ctx, attempts), "replay must not error")
+	Describe("UpsertAttempts", func() {
+		It("is idempotent — replaying the same event does not create a duplicate row", func() {
+			now := time.Now().UTC().Truncate(time.Millisecond)
+			attempts := []event.TestAttempt{
+				{
+					EventID: "evt-001", Repo: "org/repo", Suite: "s", Framework: "playwright",
+					Env: "dev", Branch: "main", RunID: "1", RunAttempt: 1,
+					TestID: "file::test1", Status: event.StatusPassed, DurationMS: 500, StartedAt: now,
+				},
+			}
 
-	var count int
-	s.DB().QueryRowContext(ctx, `SELECT count(*) FROM test_case_attempts WHERE event_id = 'evt-001'`).Scan(&count)
-	assert.Equal(t, 1, count, "idempotent: duplicate event_id must not create two rows")
-}
+			Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
+			Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed(), "replay must not error")
 
-func TestQueryHistory(t *testing.T) {
-	s, cleanup := setupDB(t)
-	defer cleanup()
-	ctx := context.Background()
+			var count int
+			s.DB().QueryRowContext(ctx, `SELECT count(*) FROM test_case_attempts WHERE event_id = 'evt-001'`).Scan(&count)
+			Expect(count).To(Equal(1), "idempotent: duplicate event_id must not create two rows")
+		})
+	})
 
-	now := time.Now().UTC().Truncate(time.Millisecond)
-	attempts := []event.TestAttempt{
-		{
-			EventID: "h1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-			RunID: "run-1", RunAttempt: 1, TestID: "f::t",
-			Status: event.StatusPassed, DurationMS: 400,
-			CommitSHA: "commit-abc",
-			StartedAt: now.Add(-time.Minute),
-		},
-		{
-			EventID: "h2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-			RunID: "run-2", RunAttempt: 1, TestID: "f::t",
-			Status: event.StatusFailed, DurationMS: 900,
-			CommitSHA: "commit-def", FailureMessageExcerpt: "panic: nil pointer",
-			StartedAt: now,
-		},
-	}
-	require.NoError(t, s.UpsertAttempts(ctx, attempts))
+	Describe("QueryHistory", func() {
+		It("returns correct aggregate statistics", func() {
+			now := time.Now().UTC().Truncate(time.Millisecond)
+			attempts := []event.TestAttempt{
+				{
+					EventID: "h1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+					RunID: "run-1", RunAttempt: 1, TestID: "f::t",
+					Status: event.StatusPassed, DurationMS: 400,
+					CommitSHA: "commit-abc",
+					StartedAt: now.Add(-time.Minute),
+				},
+				{
+					EventID: "h2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+					RunID: "run-2", RunAttempt: 1, TestID: "f::t",
+					Status: event.StatusFailed, DurationMS: 900,
+					CommitSHA: "commit-def", FailureMessageExcerpt: "panic: nil pointer",
+					StartedAt: now,
+				},
+			}
+			Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
 
-	hs, err := s.QueryHistory(ctx, "org/repo", "s", "dev", "f::t", "30d")
-	require.NoError(t, err)
-	assert.Equal(t, 2, hs.Attempts)
-	assert.Equal(t, 1, hs.Passed)
-	assert.Equal(t, 1, hs.Failed)
-	assert.InDelta(t, 50.0, hs.FailureRate, 0.1)
+			hs, err := s.QueryHistory(ctx, "org/repo", "s", "dev", "f::t", "30d")
+			Expect(err).NotTo(HaveOccurred())
+			Expect(hs.Attempts).To(Equal(2))
+			Expect(hs.Passed).To(Equal(1))
+			Expect(hs.Failed).To(Equal(1))
+			Expect(hs.FailureRate).To(BeNumerically("~", 50.0, 0.1))
 
-	// Last failure message and most-recent commit SHA are surfaced.
-	require.NotNil(t, hs.LastFailureExcerpt)
-	assert.Equal(t, "panic: nil pointer", *hs.LastFailureExcerpt)
-	require.NotNil(t, hs.LastCommitSHA)
-	assert.Equal(t, "commit-def", *hs.LastCommitSHA, "most recent run's commit SHA")
-}
+			// Last failure message and most-recent commit SHA are surfaced.
+			Expect(hs.LastFailureExcerpt).NotTo(BeNil())
+			Expect(*hs.LastFailureExcerpt).To(Equal("panic: nil pointer"))
+			Expect(hs.LastCommitSHA).NotTo(BeNil())
+			Expect(*hs.LastCommitSHA).To(Equal("commit-def"), "most recent run's commit SHA")
+		})
+	})
 
-func TestQueryTrends(t *testing.T) {
-	s, cleanup := setupDB(t)
-	defer cleanup()
-	ctx := context.Background()
+	Describe("QueryTrends", func() {
+		It("groups attempts into buckets", func() {
+			now := time.Now().UTC().Truncate(time.Millisecond)
+			attempts := []event.TestAttempt{
+				{EventID: "t1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+					RunID: "1", RunAttempt: 1, TestID: "f::t", Status: event.StatusPassed, DurationMS: 300, StartedAt: now},
+				{EventID: "t2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
+					RunID: "2", RunAttempt: 1, TestID: "f::t", Status: event.StatusFailed, DurationMS: 800, StartedAt: now},
+			}
+			Expect(s.UpsertAttempts(ctx, attempts)).To(Succeed())
 
-	now := time.Now().UTC().Truncate(time.Millisecond)
-	attempts := []event.TestAttempt{
-		{EventID: "t1", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-			RunID: "1", RunAttempt: 1, TestID: "f::t", Status: event.StatusPassed, DurationMS: 300, StartedAt: now},
-		{EventID: "t2", Repo: "org/repo", Suite: "s", Framework: "playwright", Env: "dev",
-			RunID: "2", RunAttempt: 1, TestID: "f::t", Status: event.StatusFailed, DurationMS: 800, StartedAt: now},
-	}
-	require.NoError(t, s.UpsertAttempts(ctx, attempts))
-
-	buckets, err := s.QueryTrends(ctx, "org/repo", "s", "dev", "7d")
-	require.NoError(t, err)
-	require.Len(t, buckets, 1)
-	assert.Equal(t, 2, buckets[0].Attempts)
-}
+			buckets, err := s.QueryTrends(ctx, "org/repo", "s", "dev", "7d")
+			Expect(err).NotTo(HaveOccurred())
+			Expect(buckets).To(HaveLen(1))
+			Expect(buckets[0].Attempts).To(Equal(2))
+		})
+	})
+})

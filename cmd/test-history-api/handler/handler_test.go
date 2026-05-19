@@ -9,19 +9,25 @@ import (
 	"testing"
 	"time"
 
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/cmd/test-history-api/handler"
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/event"
 	"github.com/sravanmedarapu-work/nscale-quality-tooling/internal/store"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
+
+func TestHandlerSuite(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Handler Suite")
+}
 
 // --- mock store ---
 
 type mockStore struct {
-	upsertErr  error
-	upserted   []event.TestAttempt
-	pingErr    error
+	upsertErr error
+	upserted  []event.TestAttempt
+	pingErr   error
 }
 
 func (m *mockStore) UpsertAttempts(_ context.Context, a []event.TestAttempt) error {
@@ -50,155 +56,172 @@ func validAttempt() event.TestAttempt {
 	}
 }
 
-// --- tests ---
+// --- specs ---
 
-func TestHealthz_ok(t *testing.T) {
-	h := newHandler(&mockStore{})
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, httptest.NewRequest("GET", "/healthz", nil))
-	assert.Equal(t, http.StatusOK, rec.Code)
-}
-
-func TestHealthz_db_down(t *testing.T) {
-	h := newHandler(&mockStore{pingErr: assert.AnError})
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, httptest.NewRequest("GET", "/healthz", nil))
-	assert.Equal(t, http.StatusServiceUnavailable, rec.Code)
-}
-
-func TestIngest_success(t *testing.T) {
-	ms := &mockStore{}
-	h := newHandler(ms)
-
-	body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{validAttempt()}})
-	req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
-	req.Header.Set("Authorization", "Bearer secret-token")
-	req.Header.Set("Content-Type", "application/json")
-
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
-
-	assert.Equal(t, http.StatusAccepted, rec.Code)
-	require.Len(t, ms.upserted, 1)
-}
-
-func TestIngest_no_auth(t *testing.T) {
-	h := newHandler(&mockStore{})
-	body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{validAttempt()}})
-	req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
-	assert.Equal(t, http.StatusUnauthorized, rec.Code)
-}
-
-func TestIngest_wrong_token(t *testing.T) {
-	h := newHandler(&mockStore{})
-	body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{validAttempt()}})
-	req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
-	req.Header.Set("Authorization", "Bearer wrong")
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
-	assert.Equal(t, http.StatusUnauthorized, rec.Code)
-}
-
-func TestIngest_empty_events(t *testing.T) {
-	h := newHandler(&mockStore{})
-	body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{}})
-	req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
-	req.Header.Set("Authorization", "Bearer secret-token")
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
-	assert.Equal(t, http.StatusBadRequest, rec.Code)
-}
-
-func TestIngest_missing_required_field(t *testing.T) {
-	// Only identity/analytics fields (event_id, repo, suite, run_id, test_id, status)
-	// are required. Metadata fields (framework, env, started_at, run_attempt) get defaults.
-	required := []struct {
-		name  string
-		blank func(a *event.TestAttempt)
-	}{
-		{"event_id", func(a *event.TestAttempt) { a.EventID = "" }},
-		{"repo", func(a *event.TestAttempt) { a.Repo = "" }},
-		{"suite", func(a *event.TestAttempt) { a.Suite = "" }},
-		{"run_id", func(a *event.TestAttempt) { a.RunID = "" }},
-		{"test_id", func(a *event.TestAttempt) { a.TestID = "" }},
-		{"status", func(a *event.TestAttempt) { a.Status = "" }},
-	}
-	for _, tc := range required {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+var _ = Describe("Handler", func() {
+	Describe("GET /healthz", func() {
+		It("returns 200 when DB is up", func() {
 			h := newHandler(&mockStore{})
-			bad := validAttempt()
-			tc.blank(&bad)
-			body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{bad}})
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, httptest.NewRequest("GET", "/healthz", nil))
+			Expect(rec.Code).To(Equal(http.StatusOK))
+		})
+
+		It("returns 503 when DB is down", func() {
+			h := newHandler(&mockStore{pingErr: errSentinel})
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, httptest.NewRequest("GET", "/healthz", nil))
+			Expect(rec.Code).To(Equal(http.StatusServiceUnavailable))
+		})
+	})
+
+	Describe("POST /v1/runs/ingest", func() {
+		It("accepts a valid batch and returns 202", func() {
+			ms := &mockStore{}
+			h := newHandler(ms)
+
+			body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{validAttempt()}})
+			req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
+			req.Header.Set("Authorization", "Bearer secret-token")
+			req.Header.Set("Content-Type", "application/json")
+
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+
+			Expect(rec.Code).To(Equal(http.StatusAccepted))
+			Expect(ms.upserted).To(HaveLen(1))
+		})
+
+		It("returns 401 when Authorization header is absent", func() {
+			h := newHandler(&mockStore{})
+			body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{validAttempt()}})
+			req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+			Expect(rec.Code).To(Equal(http.StatusUnauthorized))
+		})
+
+		It("returns 401 for a wrong token", func() {
+			h := newHandler(&mockStore{})
+			body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{validAttempt()}})
+			req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
+			req.Header.Set("Authorization", "Bearer wrong")
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+			Expect(rec.Code).To(Equal(http.StatusUnauthorized))
+		})
+
+		It("returns 400 for an empty events array", func() {
+			h := newHandler(&mockStore{})
+			body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{}})
 			req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
 			req.Header.Set("Authorization", "Bearer secret-token")
 			rec := httptest.NewRecorder()
 			h.ServeHTTP(rec, req)
-			assert.Equal(t, http.StatusBadRequest, rec.Code, "missing %s must be 400", tc.name)
+			Expect(rec.Code).To(Equal(http.StatusBadRequest))
 		})
-	}
-}
 
-func TestIngest_applies_defaults(t *testing.T) {
-	ms := &mockStore{}
-	h := newHandler(ms)
+		Describe("missing required fields", func() {
+			// Only identity/analytics fields are required; metadata fields get defaults.
+			type requiredField struct {
+				name  string
+				blank func(a *event.TestAttempt)
+			}
+			fields := []requiredField{
+				{"event_id", func(a *event.TestAttempt) { a.EventID = "" }},
+				{"repo", func(a *event.TestAttempt) { a.Repo = "" }},
+				{"suite", func(a *event.TestAttempt) { a.Suite = "" }},
+				{"run_id", func(a *event.TestAttempt) { a.RunID = "" }},
+				{"test_id", func(a *event.TestAttempt) { a.TestID = "" }},
+				{"status", func(a *event.TestAttempt) { a.Status = "" }},
+			}
 
-	// Event with only the 6 required fields — no framework, env, started_at, run_attempt.
-	minimal := event.TestAttempt{
-		EventID: "evt-min", Repo: "org/repo", Suite: "s",
-		RunID: "1", TestID: "f::t", Status: event.StatusPassed,
-	}
-	body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{minimal}})
-	req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
-	req.Header.Set("Authorization", "Bearer secret-token")
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
+			for _, f := range fields {
+				f := f
+				It("returns 400 when "+f.name+" is blank", func() {
+					h := newHandler(&mockStore{})
+					bad := validAttempt()
+					f.blank(&bad)
+					body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{bad}})
+					req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
+					req.Header.Set("Authorization", "Bearer secret-token")
+					rec := httptest.NewRecorder()
+					h.ServeHTTP(rec, req)
+					Expect(rec.Code).To(Equal(http.StatusBadRequest), "missing %s must be 400", f.name)
+				})
+			}
+		})
 
-	require.Equal(t, http.StatusAccepted, rec.Code)
-	require.Len(t, ms.upserted, 1)
-	stored := ms.upserted[0]
-	assert.Equal(t, "unknown", stored.Framework, "framework defaults to unknown")
-	assert.Equal(t, "unknown", stored.Env, "env defaults to unknown")
-	assert.Equal(t, 1, stored.RunAttempt, "run_attempt defaults to 1")
-	assert.False(t, stored.StartedAt.IsZero(), "started_at defaults to now")
-}
+		It("applies defaults for optional metadata fields", func() {
+			ms := &mockStore{}
+			h := newHandler(ms)
 
-func TestIngest_db_unavailable_returns_503(t *testing.T) {
-	h := newHandler(&mockStore{upsertErr: assert.AnError})
-	body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{validAttempt()}})
-	req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
-	req.Header.Set("Authorization", "Bearer secret-token")
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
-	assert.Equal(t, http.StatusServiceUnavailable, rec.Code)
-	assert.Equal(t, "30", rec.Header().Get("Retry-After"))
-}
+			minimal := event.TestAttempt{
+				EventID: "evt-min", Repo: "org/repo", Suite: "s",
+				RunID: "1", TestID: "f::t", Status: event.StatusPassed,
+			}
+			body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{minimal}})
+			req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
+			req.Header.Set("Authorization", "Bearer secret-token")
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
 
-func TestHistory_ok(t *testing.T) {
-	h := newHandler(&mockStore{})
-	req := httptest.NewRequest("GET", "/v1/tests/history?repo=org/repo&suite=s&env=dev&test_id=f::t", nil)
-	req.Header.Set("Authorization", "Bearer secret-token")
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
-	assert.Equal(t, http.StatusOK, rec.Code)
-}
+			Expect(rec.Code).To(Equal(http.StatusAccepted))
+			Expect(ms.upserted).To(HaveLen(1))
+			stored := ms.upserted[0]
+			Expect(stored.Framework).To(Equal("unknown"), "framework defaults to unknown")
+			Expect(stored.Env).To(Equal("unknown"), "env defaults to unknown")
+			Expect(stored.RunAttempt).To(Equal(1), "run_attempt defaults to 1")
+			Expect(stored.StartedAt.IsZero()).To(BeFalse(), "started_at defaults to now")
+		})
 
-func TestHistory_missing_params(t *testing.T) {
-	h := newHandler(&mockStore{})
-	req := httptest.NewRequest("GET", "/v1/tests/history?repo=org/repo", nil)
-	req.Header.Set("Authorization", "Bearer secret-token")
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
-	assert.Equal(t, http.StatusBadRequest, rec.Code)
-}
+		It("returns 503 with Retry-After when DB is unavailable", func() {
+			h := newHandler(&mockStore{upsertErr: errSentinel})
+			body, _ := json.Marshal(map[string]any{"events": []event.TestAttempt{validAttempt()}})
+			req := httptest.NewRequest("POST", "/v1/runs/ingest", bytes.NewReader(body))
+			req.Header.Set("Authorization", "Bearer secret-token")
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+			Expect(rec.Code).To(Equal(http.StatusServiceUnavailable))
+			Expect(rec.Header().Get("Retry-After")).To(Equal("30"))
+		})
+	})
 
-func TestTrends_ok(t *testing.T) {
-	h := newHandler(&mockStore{})
-	req := httptest.NewRequest("GET", "/v1/tests/trends?repo=org/repo&suite=s&env=dev", nil)
-	req.Header.Set("Authorization", "Bearer secret-token")
-	rec := httptest.NewRecorder()
-	h.ServeHTTP(rec, req)
-	assert.Equal(t, http.StatusOK, rec.Code)
-}
+	Describe("GET /v1/tests/history", func() {
+		It("returns 200 for a valid request", func() {
+			h := newHandler(&mockStore{})
+			req := httptest.NewRequest("GET", "/v1/tests/history?repo=org/repo&suite=s&env=dev&test_id=f::t", nil)
+			req.Header.Set("Authorization", "Bearer secret-token")
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+			Expect(rec.Code).To(Equal(http.StatusOK))
+		})
+
+		It("returns 400 when required params are missing", func() {
+			h := newHandler(&mockStore{})
+			req := httptest.NewRequest("GET", "/v1/tests/history?repo=org/repo", nil)
+			req.Header.Set("Authorization", "Bearer secret-token")
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+			Expect(rec.Code).To(Equal(http.StatusBadRequest))
+		})
+	})
+
+	Describe("GET /v1/tests/trends", func() {
+		It("returns 200 for a valid request", func() {
+			h := newHandler(&mockStore{})
+			req := httptest.NewRequest("GET", "/v1/tests/trends?repo=org/repo&suite=s&env=dev", nil)
+			req.Header.Set("Authorization", "Bearer secret-token")
+			rec := httptest.NewRecorder()
+			h.ServeHTTP(rec, req)
+			Expect(rec.Code).To(Equal(http.StatusOK))
+		})
+	})
+})
+
+// errSentinel is a simple non-nil error used where assert.AnError was previously used.
+var errSentinel = &sentinelError{}
+
+type sentinelError struct{}
+
+func (e *sentinelError) Error() string { return "sentinel error" }
