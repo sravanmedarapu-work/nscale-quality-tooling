@@ -16,13 +16,14 @@ type suiteReport struct {
 }
 
 type specReport struct {
-	ContainerHierarchyTexts []string        `json:"ContainerHierarchyTexts"`
-	LeafNodeText            string          `json:"LeafNodeText"`
-	State                   string          `json:"State"`
-	RunTime                 int64           `json:"RunTime"` // nanoseconds
-	NumAttempts             int             `json:"NumAttempts"`
-	StartTime               time.Time       `json:"StartTime"`
-	Failure                 *ginkgoFailure  `json:"Failure"`
+	ContainerHierarchyTexts []string       `json:"ContainerHierarchyTexts"`
+	LeafNodeType            string         `json:"LeafNodeType"`
+	LeafNodeText            string         `json:"LeafNodeText"`
+	State                   string         `json:"State"`
+	RunTime                 int64          `json:"RunTime"` // nanoseconds
+	NumAttempts             int            `json:"NumAttempts"`
+	StartTime               time.Time      `json:"StartTime"`
+	Failure                 *ginkgoFailure `json:"Failure"`
 }
 
 type ginkgoFailure struct {
@@ -50,6 +51,11 @@ func Parse(r io.Reader) ([]RawResult, error) {
 	var out []RawResult
 	for _, sr := range reports {
 		for _, spec := range sr.SpecReports {
+			// Skip setup/teardown nodes (BeforeSuite, AfterSuite, etc.) — they
+			// have no LeafNodeText and are not addressable test cases.
+			if spec.LeafNodeText == "" {
+				continue
+			}
 			testID := buildTestID(spec.ContainerHierarchyTexts, spec.LeafNodeText)
 			attempts := spec.NumAttempts
 			if attempts < 1 {

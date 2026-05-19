@@ -536,7 +536,7 @@ func TestLifecycle_Ginkgo_UniComputeUAT(t *testing.T) {
 }
 
 // TestLifecycle_Ginkgo_UniRegion ingests the uni-region UAT fixture
-// (67 specs: 13 passed, 54 skipped — focused run).
+// (66 real specs: 12 passed, 54 skipped — focused run; BeforeSuite node excluded).
 func TestLifecycle_Ginkgo_UniRegion(t *testing.T) {
 	suite := suiteName(t)
 
@@ -545,13 +545,13 @@ func TestLifecycle_Ginkgo_UniRegion(t *testing.T) {
 
 	tr := decodeTrends(t, doGet(t, trendsURL(e2eRepo, suite, "uat", "30d")))
 	require.NotEmpty(t, tr.Buckets)
-	assert.Equal(t, 67, totalAttempts(tr))
+	assert.Equal(t, 66, totalAttempts(tr))
 
 	var totalPassed int
 	for _, b := range tr.Buckets {
 		totalPassed += b.Passed
 	}
-	assert.Equal(t, 13, totalPassed)
+	assert.Equal(t, 12, totalPassed)
 }
 
 // TestLifecycle_JUnit_Fallback verifies that the CLI falls back to JUnit XML
