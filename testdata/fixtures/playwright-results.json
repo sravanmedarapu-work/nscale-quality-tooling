@@ -1,0 +1,71 @@
+{
+  "suites": [
+    {
+      "title": "vpc.spec.ts",
+      "file": "tests/network/vpc.spec.ts",
+      "suites": [
+        {
+          "title": "VPC",
+          "specs": [
+            {
+              "title": "create and delete VPC",
+              "file": "tests/network/vpc.spec.ts",
+              "tests": [
+                {
+                  "status": "expected",
+                  "results": [
+                    {
+                      "status": "passed",
+                      "duration": 4200,
+                      "startTime": "2026-05-19T10:00:00.000Z"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "create VPC fails on timeout",
+              "file": "tests/network/vpc.spec.ts",
+              "tests": [
+                {
+                  "status": "unexpected",
+                  "results": [
+                    {
+                      "status": "failed",
+                      "duration": 30000,
+                      "startTime": "2026-05-19T10:00:05.000Z",
+                      "error": {
+                        "message": "Timeout 30000ms exceeded while waiting for element"
+                      }
+                    },
+                    {
+                      "status": "passed",
+                      "duration": 4800,
+                      "startTime": "2026-05-19T10:00:36.000Z"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "list VPCs",
+              "file": "tests/network/vpc.spec.ts",
+              "tests": [
+                {
+                  "status": "skipped",
+                  "results": [
+                    {
+                      "status": "skipped",
+                      "duration": 0,
+                      "startTime": "2026-05-19T10:01:00.000Z"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

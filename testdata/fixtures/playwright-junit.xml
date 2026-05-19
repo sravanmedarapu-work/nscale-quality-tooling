@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="console-e2e" tests="3" failures="1" skipped="1" time="12.345">
+    <testcase name="create and delete VPC" classname="tests/network/vpc.spec.ts" time="4.200">
+    </testcase>
+    <testcase name="create VPC fails on timeout" classname="tests/network/vpc.spec.ts" time="30.000">
+      <failure message="Timeout 30000ms exceeded">Error: Timeout 30000ms exceeded while waiting for element</failure>
+    </testcase>
+    <testcase name="list VPCs" classname="tests/network/vpc.spec.ts" time="0.001">
+      <skipped/>
+    </testcase>
+  </testsuite>
+</testsuites>
